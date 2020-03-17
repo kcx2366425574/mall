@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kcx.mall.customer.dao.CustomerMapper" >
+
+  <resultMap id="BaseResultMap" type="com.kcx.mall.customer.pojo.Customer" >
+    <id column="cus_id" property="cusId" jdbcType="INTEGER" />
+    <result column="cus_login_name" property="cusLoginName" jdbcType="VARCHAR" />
+    <result column="cus_password" property="cusPassword" jdbcType="VARCHAR" />
+    <result column="cus_ison" property="cusIson" jdbcType="BIT" />
+    <result column="cus_account" property="cusAccount" jdbcType="REAL" />
+    <result column="cus_contanct_info" property="cusContanctInfo" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select *
+    from customer
+    where cus_id = #{cusId,jdbcType=INTEGER}
+  </select>
+  
+  	<insert id="insert" parameterType="com.kcx.mall.customer.pojo.Customer">
+		insert into customer (cus_id,
+		cus_login_name, cus_password,
+		cus_ison, cus_account, cus_contanct_info)
+		values (default,
+		#{cusLoginName,jdbcType=VARCHAR},
+		#{cusPassword,jdbcType=VARCHAR},
+		#{cusIson,jdbcType=TINYINT}, #{cusAccount,jdbcType=FLOAT},
+		#{cusContanctInfo,jdbcType=VARCHAR})
+	</insert>
+	
+	<update id="update" parameterType="com.kcx.mall.customer.pojo.Customer">
+		update customer set 
+		cus_login_name = #{cusLoginName,jdbcType=VARCHAR},
+		cus_password  = #{cusPassword,jdbcType=VARCHAR},
+		cus_account = #{cusAccount,jdbcType=FLOAT},
+		cus_contanct_info = #{cusContanctInfo,jdbcType=VARCHAR}
+		where cus_id = #{cusId,jdbcType=INTEGER}
+	</update>
+	
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		delete from customer where cus_id = #{cusId,jdbcType=INTEGER}
+	</delete>
+	
+	<delete id="deleteMany" parameterType="Integer[]">
+		delete from customer where cus_id in
+		<foreach collection="array" index="i" item="cusId" open="("
+			close=")" separator=",">
+			#{cusId}
+		</foreach>
+	</delete>
+  
+</mapper>

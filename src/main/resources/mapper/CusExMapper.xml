@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kcx.mall.customer.dao.CusExMapper" >
+  <resultMap id="BaseResultMap" type="com.kcx.mall.customer.pojo.CusEx" >
+    <id column="ce_id" property="ceId" jdbcType="INTEGER" />
+    <result column="ce_cus_name" property="ceCusName" jdbcType="VARCHAR" />
+    <result column="ce_cus_address" property="ceCusAddress" jdbcType="VARCHAR" />
+    <result column="ce_cus_idcard" property="ceCusIdcard" jdbcType="VARCHAR" />
+    
+    <!-- 用户映射 -->
+	<association property="ceCus" javaType="com.kcx.mall.customer.pojo.Customer">
+		<id column="cus_id" property="cusId" jdbcType="INTEGER" />
+		<result column="cus_login_name" property="cusLoginName" jdbcType="VARCHAR" />
+		<result column="cus_password" property="cusPassword" jdbcType="VARCHAR" />
+		<result column="cus_account" property="cusAccount" jdbcType="FLOAT" />
+		<result column="cus_contanct_info" property="cusContanctInfo" jdbcType="VARCHAR" />
+	</association>
+  </resultMap>
+  
+  <insert id="addCusEx" parameterType="com.kcx.mall.customer.pojo.CusEx">
+  	insert into cus_ex (ce_id,
+		ce_cus_id, ce_cus_name,
+		ce_cus_address, ce_cus_idcard)
+		values 
+		(default,
+		#{ceCus.cusId,jdbcType=INTEGER},
+		#{ceCusName,jdbcType=VARCHAR},
+		#{ceCusAddress,jdbcType=VARCHAR}, 
+		#{ceCusIdcard,jdbcType=VARCHAR})
+  </insert>
+  
+  <update id="updateByCusId" parameterType="com.kcx.mall.customer.pojo.CusEx">
+    update cus_ex set ce_cus_name = #{ceCusName,jdbcType=VARCHAR},
+                      ce_cus_address = #{ceCusAddress,jdbcType=VARCHAR}, 
+                      ce_cus_idcard = #{ceCusIdcard,jdbcType=VARCHAR} 
+    where ce_cus_id = #{ceCus.cusId,jdbcType=INTEGER}
+  </update>
+  
+  <select id="queryByCusId" parameterType="java.lang.Integer" resultMap ="BaseResultMap">
+  	select * from cus_ex where ce_cus_id = #{ceCus.cusId,jdbcType=INTEGER}
+  </select>
+</mapper>

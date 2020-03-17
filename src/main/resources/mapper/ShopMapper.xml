@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kcx.mall.shop.dao.ShopMapper" >
+  <resultMap id="BaseResultMap" type="com.kcx.mall.shop.pojo.Shop" >
+    <id column="shop_id" property="shopId" jdbcType="INTEGER" />
+    <result column="shop_name" property="shopName" jdbcType="VARCHAR" />
+    <result column="shop_minname" property="shopMinname" jdbcType="VARCHAR" />
+    <result column="shop_password" property="shopPassword" jdbcType="VARCHAR" />
+    <result column="shop_info" property="shopInfo" jdbcType="VARCHAR" />
+    <result column="shop_address" property="shopAddress" jdbcType="VARCHAR" />
+    <result column="shop_owner" property="shopOwner" jdbcType="VARCHAR" />
+    <result column="shop_owner_idcard" property="shopOwnerIdcard" jdbcType="VARCHAR" />
+    <result column="shop_account" property="shopAccount" jdbcType="REAL" />
+    <result column="shop_state" property="shopState" jdbcType="VARCHAR" />
+    
+    <!-- 管理员映射 -->
+	<association property="shopMana" javaType="com.kcx.mall.manager.pojo.Manager">
+		<id column="mana_id" property="manaId" jdbcType="INTEGER" />
+		<result column="mana_name" property="manaName" jdbcType="VARCHAR" />
+		<result column="mana_password" property="manaPassword" jdbcType="VARCHAR" />
+	</association>
+  </resultMap>
+  
+  <insert id="addShop" parameterType="com.kcx.mall.shop.pojo.Shop">
+		insert into shop (shop_id,
+		shop_name,shop_minname, shop_password,
+		shop_info, shop_address, shop_owner,shop_owner_idcard,
+		shop_account,shop_state,shop_mana)
+		values (default,
+		#{shopName,jdbcType=VARCHAR},#{shopMinname,jdbcType=VARCHAR},
+		#{shopPassword,jdbcType=VARCHAR},#{shopInfo,jdbcType=VARCHAR},
+		#{shopAddress,jdbcType=VARCHAR},#{shopOwner,jdbcType=VARCHAR},
+		#{shopOwnerIdcard,jdbcType=VARCHAR},#{shopAccount,jdbcType=FLOAT},
+		#{shopState,jdbcType=VARCHAR},#{shopMana.manaId,jdbcType=INTEGER})
+	</insert>
+  
+  <delete id="deleteShop" parameterType="java.lang.Integer">
+		delete from shop where shop_id = #{shopId,jdbcType=INTEGER}
+	</delete>
+	
+	<delete id="deleteMany" parameterType="Integer[]">
+		delete from shop where shop_id in
+		<foreach collection="array" index="i" item="shopId" open="("
+			close=")" separator=",">
+			#{shopId}
+		</foreach>
+	</delete>
+	
+  <update id="update" parameterType="com.kcx.mall.shop.pojo.Shop">
+		update shop set 
+		shop_name = #{shopName,jdbcType=VARCHAR},shop_minname = #{shopMinname,jdbcType=VARCHAR},
+		shop_password = #{shopPassword,jdbcType=VARCHAR},shop_info = #{shopInfo,jdbcType=VARCHAR},
+		shop_address = #{shopAddress,jdbcType=VARCHAR},shop_owner = #{shopOwner,jdbcType=VARCHAR},
+		shop_owner_idcard = #{shopOwnerIdcard,jdbcType=VARCHAR},shop_account = #{shopAccount,jdbcType=FLOAT},
+		shop_state = #{shopState,jdbcType=VARCHAR},shop_mana = #{shopMana.manaId,jdbcType=INTEGER}
+		where shop_id = #{shopId,jdbcType=INTEGER}
+	</update>
+	
+	<select id="queryById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select *
+    from shop
+    where shop_id = #{shopId,jdbcType=INTEGER}
+  </select>
+</mapper>
