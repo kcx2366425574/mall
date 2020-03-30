@@ -1,5 +1,7 @@
 package com.kcx.mall.custest;
 
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -25,6 +27,17 @@ public class DaoTest {
 	public void testSelectById() {
 		Customer customer = mapper.selectById(1);
 		System.out.println(customer);
+	}
+	
+	/**
+	 * 查询所有用户
+	 */
+	@Test
+	public void testQueryAll() {
+		List<Customer> list = mapper.queryAll(0, 5);
+		for (Customer customer : list) {
+			System.out.println(customer);
+		}
 	}
 	
 	/**

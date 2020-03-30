@@ -17,6 +17,18 @@
     where cus_id = #{cusId,jdbcType=INTEGER}
   </select>
   
+  <select id="queryAll" resultMap="BaseResultMap" >
+    select *
+    from customer
+    LIMIT #{start}, #{pageSize}
+  </select>
+  
+  <select id="selectByLoginName" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select *
+    from customer
+    where cus_login_name = #{cusLoginName,jdbcType=VARCHAR}
+  </select>
+  
   	<insert id="insert" parameterType="com.kcx.mall.customer.pojo.Customer">
 		insert into customer (cus_id,
 		cus_login_name, cus_password,

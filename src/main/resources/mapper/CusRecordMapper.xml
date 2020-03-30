@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kcx.mall.customer.dao.CusRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.kcx.mall.customer.pojo.CusRecord" >
+    <id column="cr_id" property="crId" jdbcType="INTEGER" />
+    <result column="cr_cus_recharge" property="crCusRecharge" jdbcType="REAL" />
+    <result column="cr_cus_rest" property="crCusRest" jdbcType="REAL" />
+    <result column="cr_time" property="crTime" jdbcType="TIMESTAMP" />
+    
+    <!-- 用户映射 -->
+	<association property="crCus" javaType="com.kcx.mall.customer.pojo.Customer">
+		<id column="cus_id" property="cusId" jdbcType="INTEGER" />
+		<result column="cus_login_name" property="cusLoginName" jdbcType="VARCHAR" />
+		<result column="cus_password" property="cusPassword" jdbcType="VARCHAR" />
+		<result column="cus_account" property="cusAccount" jdbcType="FLOAT" />
+		<result column="cus_contanct_info" property="cusContanctInfo" jdbcType="VARCHAR" />
+	</association>
+  </resultMap>
+  
+  <insert id="addCusRecord" parameterType="com.kcx.mall.customer.pojo.CusRecord">
+  	insert into cus_record (cr_id,
+		cr_cus_id, cr_cus_recharge,
+		cr_cus_rest, cr_time)
+		values 
+		(default,
+		#{crCus.cusId,jdbcType=INTEGER},
+		#{crCusRecharge,jdbcType=FLOAT},
+		#{crCusRest,jdbcType=FLOAT}, 
+		#{crTime})
+  </insert>
+  
+  <select id="queryById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select *
+    from cus_record
+    where cr_id = #{crId,jdbcType=INTEGER}
+  </select>
+  
+  <select id="queryAll" resultMap="BaseResultMap">
+    select *
+    from cus_record 
+    LIMIT #{start}, #{pageSize}
+  </select>
+  
+  
+  <select id="queryByCondition" resultMap="BaseResultMap">
+		SELECT *
+		FROM cus_record cr
+		LEFT OUTER JOIN customer cus
+		ON cr.`cr_cus_id`
+		= cus.`cus_id`
+		<where>
+		    <if test="crCusId !=null and  crCusId!='' ">
+		        and cr.cr_cus_id = #{crCusId,jdbcType=INTEGER}
+		    </if>
+		    
+		    <if test="startDate !=null ">
+		        and cr.cr_time > #{startDate}
+		    </if>
+		    
+		    <if test="endDate !=null ">
+		        and  #{endDate} > cr.cr_time 
+		    </if>
+			
+		</where>
+		LIMIT #{start}, #{pageSize}
+	</select>
+  
+</mapper>

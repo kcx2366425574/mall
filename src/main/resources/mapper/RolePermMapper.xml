@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kcx.mall.perm.dao.RolePermMapper">
+	<resultMap id="BaseResultMap" type="com.kcx.mall.perm.pojo.RolePerm">
+		<id column="rp_id" property="rpId" jdbcType="INTEGER" />
+		
+		<association property="role" javaType="com.kcx.mall.perm.pojo.Role">
+			<id column="role_id" property="roleId" jdbcType="INTEGER" />
+			<result column="role_name" property="roleName" jdbcType="VARCHAR" />
+			<result column="role_info" property="roleInfo" jdbcType="VARCHAR" />
+		</association>
+		
+		<association property="perm" javaType="com.kcx.mall.perm.pojo.Permission">
+			<id column="perm_id" property="permId" jdbcType="INTEGER" />
+			<result column="perm_name" property="permName" jdbcType="VARCHAR" />
+			<result column="perm_info" property="permInfo" jdbcType="VARCHAR" />
+		</association>
+	</resultMap>
+	
+	<insert id="insert" parameterType="com.kcx.mall.perm.pojo.RolePerm" >
+	    insert into role_perm (rp_id, rp_role_id, rp_perm_id)
+	    values (default, #{role.roleId,jdbcType=INTEGER}, #{perm.permId,jdbcType=INTEGER})
+    </insert>
+    
+    <delete id="delete" parameterType="Integer[]">
+		delete from role_perm where rp_id in
+		<foreach collection="array" index="i" item="rpId" open="("
+			close=")" separator=",">
+			#{rpId}
+		</foreach>
+	</delete>
+	
+	<update id="update" parameterType="com.kcx.mall.perm.pojo.RolePerm" >
+	    update role_perm
+	    set rp_role_id = #{roleId,jdbcType=INTEGER},
+	        rp_perm_id = #{permId,jdbcType=INTEGER}
+	    where rp_id = #{rpId,jdbcType=INTEGER}
+    </update>
+    
+    <select id="getCount" resultType="java.lang.Integer">
+		select count(*)
+		from role_perm rp
+		<where>
+			<if test="roleId != null and roleId != '' ">
+				and rp.rp_role_id = #{roleId, jdbcType=INTEGER}
+			</if>
+			<if test="permId != null and permId != '' ">
+				and rp.rp_perm_id = #{permId, jdbcType=INTEGER}
+			</if>
+		</where>
+	</select>
+    
+    <select id="query" resultMap="BaseResultMap">
+		SELECT *
+		FROM role_perm rp
+		LEFT OUTER JOIN role r ON rp.rp_role_id = r.role_id
+		LEFT OUTER JOIN permission p ON rp.rp_perm_id = p.perm_id
+		<where>
+			<if test="roleId != null and roleId != '' ">
+				and rp.rp_role_id = #{roleId, jdbcType=INTEGER}
+			</if>
+			<if test="permId != null and permId != '' ">
+				and rp.rp_perm_id = #{permId, jdbcType=INTEGER}
+			</if>
+		</where>
+		LIMIT #{start}, #{pageSize}
+	</select>
+	
+	<!-- 查询每个角色已拥有的权限 返回id数组 -->
+	<select id="getPermIds" resultType="java.lang.Integer">
+		SELECT rp.rp_perm_id
+		FROM role_perm rp
+		WHERE rp.rp_role_id = #{roleId,jdbcType=INTEGER}
+	</select>
+	
+	<!-- 查询每个角色已拥有的权限 返回Map-->
+	<select id="searchPerms" resultMap="BaseResultMap">
+		SELECT *
+		FROM role_perm rp
+		LEFT OUTER JOIN permission p ON rp.`rp_perm_id` = p.`perm_id`
+		WHERE rp.rp_role_id = #{roleId,jdbcType=INTEGER}
+	</select>
+	
+	<!-- 查询所有权限 返回id数组-->
+	<select id="getAllPermIds" resultType="java.lang.Integer">
+		SELECT *
+		FROM permission
+	</select>
+	
+	
+</mapper>

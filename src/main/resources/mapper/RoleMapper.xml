@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kcx.mall.perm.dao.RoleMapper">
+	<resultMap id="BaseResultMap" type="com.kcx.mall.perm.pojo.Role">
+		<id column="role_id" property="roleId" jdbcType="INTEGER" />
+		<result column="role_name" property="roleName" jdbcType="VARCHAR" />
+		<result column="role_info" property="roleInfo" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<insert id="insert" parameterType="com.kcx.mall.perm.pojo.Role" >
+	    insert into role (role_id, role_name, role_info)
+	    values (default, #{roleName,jdbcType=VARCHAR}, #{roleInfo,jdbcType=VARCHAR})
+    </insert>
+    
+    <delete id="delete" parameterType="java.lang.Integer" >
+	    delete from role
+	    where role_id = #{roleId,jdbcType=INTEGER}
+    </delete>
+    
+    <update id="update" parameterType="com.kcx.mall.perm.pojo.Role" >
+	    update role
+	    set role_name = #{roleName,jdbcType=VARCHAR},
+	        role_info = #{roleInfo,jdbcType=VARCHAR}
+	    where role_id = #{roleId,jdbcType=INTEGER}
+    </update>
+    
+    <select id="getCount" resultType="java.lang.Integer">
+		select count(*) from role
+	</select>
+	
+	<select id="queryById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		SELECT *
+		FROM role
+		WHERE role_id = #{roleId,jdbcType=INTEGER}
+	</select>
+	
+	<select id="query" resultMap="BaseResultMap">
+		SELECT *
+		FROM role
+		LIMIT #{start}, #{pageSize}
+	</select>
+	
+	<!-- 根据登录名查询用户角色 -->
+	<select id="queryRole" parameterType="java.lang.String" resultType="java.util.Map">
+		SELECT r.`role_name`
+		FROM manager m
+		INNER JOIN mana_role mr ON m.`mana_id`=mr.`mr_mana_id`
+		INNER JOIN role r ON r.`role_id`=mr.`mr_role_id`
+		WHERE m.`mana_name`=#{manaName}
+	</select>
+	
+	<!-- 查询未拥有角色的集合 -->
+	<select id="searchNot" resultMap="BaseResultMap">
+		select *
+		from role
+		<where>
+			<if test="ids.length > 0">
+				role_id in
+				<foreach collection="ids" index="i" item="roleId" open="("
+					close=")" separator=",">
+					#{roleId}
+				</foreach>
+			</if>
+		</where>
+	</select>
+	
+	
+</mapper>

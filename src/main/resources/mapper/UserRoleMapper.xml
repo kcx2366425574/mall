@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kcx.mall.perm.dao.ManaRoleMapper">
+	<resultMap id="BaseResultMap" type="com.kcx.mall.perm.pojo.ManaRole">
+		<id column="mr_id" property="mrId" jdbcType="INTEGER" />
+		
+		<association property="mana" javaType="com.kcx.mall.manager.pojo.Manager">
+			<id column="mana_id" property="manaId" jdbcType="INTEGER" />
+			<result column="mana_name" property="manaName" jdbcType="VARCHAR" />
+		</association>
+		
+		<association property="role" javaType="com.kcx.mall.perm.pojo.Role">
+			<id column="role_id" property="roleId" jdbcType="INTEGER" />
+			<result column="role_name" property="roleName" jdbcType="VARCHAR" />
+			<result column="role_info" property="roleInfo" jdbcType="VARCHAR" />
+		</association>
+	</resultMap>
+	
+	<insert id="insert" parameterType="com.kcx.mall.perm.pojo.ManaRole" >
+	    insert into mana_role (mr_id, mr_mana_id, mr_role_id)
+	    values (default, #{mana.manaId,jdbcType=INTEGER}, #{role.roleId,jdbcType=INTEGER})
+    </insert>
+    
+    <delete id="delete" parameterType="Integer[]">
+		delete from mana_role where mr_id in
+		<foreach collection="array" index="i" item="urId" open="("
+			close=")" separator=",">
+			#{mrId}
+		</foreach>
+	</delete>
+	
+	<delete id="deleteByUser" parameterType="java.lang.Integer">
+		delete from mana_role 
+		where mr_mana_id = #{manaId,jdbcType=INTEGER}
+	</delete>
+	
+	<select id="getCount" resultType="java.lang.Integer">
+		select count(*)
+		from mana_role mr
+		<where>
+			<if test="roleId != null and roleId != '' ">
+				and mr.mr_role_id = #{roleId, jdbcType=INTEGER}
+			</if>
+			<if test="userId != null and userId != '' ">
+				and mr.mr_user_id = #{manaId, jdbcType=INTEGER}
+			</if>
+		</where>
+	</select>
+    
+    <select id="query" resultMap="BaseResultMap">
+		SELECT *
+		FROM mana_role mr
+		LEFT OUTER JOIN role r ON mr.mr_role_id = r.role_id
+		LEFT OUTER JOIN manager m ON mr.mr_mana_id = m.mana_id
+		<where>
+			<if test="roleId != null and roleId != '' ">
+				and mr.mr_role_id = #{roleId, jdbcType=INTEGER}
+			</if>
+			<if test="userId != null and userId != '' ">
+				and mr.mr_mana_id = #{manaId, jdbcType=INTEGER}
+			</if>
+		</where>
+		LIMIT #{start}, #{pageSize}
+	</select>
+	
+	<!-- 查询每个用户已拥有的角色 返回id数组 -->
+	<select id="getRoleIds" resultType="java.lang.Integer">
+		SELECT mr.mr_role_id
+		FROM mana_role mr
+		WHERE mr.mr_mana_id = #{manaId,jdbcType=INTEGER}
+	</select>
+	
+	<!-- 查询每个用户已拥有的角色 返回Map-->
+	<select id="searchRoles" resultMap="BaseResultMap">
+		SELECT *
+		FROM mana_role mr
+		LEFT OUTER JOIN role r ON mr.`mr_role_id` = r.`role_id`
+		WHERE mr.mr_mana_id = #{manaId,jdbcType=INTEGER}
+	</select>
+	
+	<!-- 查询所有角色 返回id数组-->
+	<select id="getAllRoleIds" resultType="java.lang.Integer">
+		SELECT *
+		FROM role
+	</select>
+	
+	<!-- 查询拥有角色的用户 去重-->
+	<select id="queryDistinct" resultType="java.util.Map">
+		SELECT DISTINCT m.mana_id, m.mana_name
+		FROM mana_role mr
+		LEFT OUTER JOIN role r ON mr.`mr_role_id` = r.`role_id`
+		LEFT OUTER JOIN manager m ON mr.`mr_mana_id` = m.`mana_id`
+		LIMIT #{start}, #{pageSize}
+	</select>
+	
+	<!-- 查询拥有角色的用户的数量-->
+	<select id="getUserNum" resultType="java.lang.Integer">
+		SELECT COUNT(DISTINCT mana_id)
+		FROM mana_role
+	</select>
+	
+	
+</mapper>

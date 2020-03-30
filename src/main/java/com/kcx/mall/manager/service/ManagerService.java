@@ -81,5 +81,9 @@ public class ManagerService {
 		return mapper.queryAll();
 	}
 	
-	
+	//根据登录名查询管理员
+	@Transactional(readOnly=true)
+	public Manager queryByLoginName(String manaName) {
+		return mapper.queryByLoginName(manaName);
+	}
 }
