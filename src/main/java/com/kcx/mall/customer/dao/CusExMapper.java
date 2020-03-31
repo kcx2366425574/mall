@@ -1,5 +1,9 @@
 package com.kcx.mall.customer.dao;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.kcx.mall.customer.pojo.CusEx;
 
 /**
@@ -23,4 +27,7 @@ public interface CusExMapper {
 	
 	//通过外键用户id查询
 	CusEx queryByCusId(int ceCusId);
+	
+	//查询所有用户扩展
+	List<CusEx> queryAll(@Param("start") int start, @Param("pageSize") int pageSize);
 }

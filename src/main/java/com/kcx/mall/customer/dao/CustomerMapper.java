@@ -10,7 +10,6 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.kcx.mall.customer.pojo.Customer;
-
 public interface CustomerMapper {
 
 	//按id查询

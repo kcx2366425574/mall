@@ -1,5 +1,7 @@
 package com.kcx.mall.manager.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -70,5 +72,46 @@ public class ManagerController {
 		session.setAttribute("manaId", mana.getManaId()); // 记录管理员id
 
 		return 3;
+	}
+	
+	// 增加管理员
+	@RequestMapping("/manager/add")
+	public void addManager(HttpServletRequest request, HttpServletResponse response, Manager mana) {
+		// 密码加密
+		String manaPassword = new Sha256Hash(mana.getManaPassword(), "我有一只小花猫", 10).toBase64();
+		mana.setManaPassword(manaPassword);
+		service.insertManager(mana);
+	}
+	
+	// 根据id删除管理员
+	@RequestMapping("/manager/delete")
+	public void delete(HttpServletRequest request, HttpServletResponse response, Integer manaId) {
+		service.deleteById(manaId);
+	}
+	
+	// 根据id批量删除管理员
+	@RequestMapping("/manager/deleteMany")
+	public void deleteMany(HttpServletRequest request, HttpServletResponse response, int[] ids) {
+		service.deleteMany(ids);
+	}
+	
+	// 修改管理员信息
+	@RequestMapping("/manager/update")
+	public void updateMana(HttpServletRequest request, HttpServletResponse response, Manager mana) {
+		service.updateManager(mana);
+	}
+	
+	// 根据id查询员工
+	@RequestMapping("/manager/get")
+	@ResponseBody
+	public Manager getManaById(HttpServletRequest request, HttpServletResponse response, int manaId) {
+		return service.queryById(manaId);
+	}
+	
+	//得到所有管理员,不提供分页功能
+	@RequestMapping("/manager/getAll")
+	@ResponseBody
+	public List<Manager> getAll(HttpServletRequest request, HttpServletResponse response) {
+		return service.queryAll();
 	}
 }
