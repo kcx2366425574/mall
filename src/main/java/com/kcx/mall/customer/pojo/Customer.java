@@ -23,6 +23,9 @@ public class Customer {
 
     //用户其他信息（联系方式）
     private String cusContanctInfo;
+    
+    //用户头像
+    private String cusPhoto;
 
     //------------getters and setters
     public Integer getCusId() {
@@ -64,8 +67,18 @@ public class Customer {
     public void setCusAccount(Float cusAccount) {
         this.cusAccount = cusAccount;
     }
+    
+    
 
-    public String getCusContanctInfo() {
+    public String getCusPhoto() {
+		return cusPhoto;
+	}
+
+	public void setCusPhoto(String cusPhoto) {
+		this.cusPhoto = cusPhoto;
+	}
+
+	public String getCusContanctInfo() {
         return cusContanctInfo;
     }
 
@@ -87,6 +100,18 @@ public class Customer {
 		this.cusIson = cusIson;
 		this.cusAccount = cusAccount;
 		this.cusContanctInfo = cusContanctInfo;
+	}
+	
+
+	public Customer(String cusLoginName, String cusPassword, Boolean cusIson, Float cusAccount, String cusContanctInfo,
+			String cusPhoto) {
+		super();
+		this.cusLoginName = cusLoginName;
+		this.cusPassword = cusPassword;
+		this.cusIson = cusIson;
+		this.cusAccount = cusAccount;
+		this.cusContanctInfo = cusContanctInfo;
+		this.cusPhoto = cusPhoto;
 	}
 
 	public Customer(String cusLoginName, String cusPassword, Boolean cusIson, Float cusAccount) {

@@ -101,7 +101,7 @@ public class ManagerController {
 		service.updateManager(mana);
 	}
 	
-	// 根据id查询员工
+	// 根据id查询
 	@RequestMapping("/manager/get")
 	@ResponseBody
 	public Manager getManaById(HttpServletRequest request, HttpServletResponse response, int manaId) {

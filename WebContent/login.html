@@ -1,161 +1,207 @@
+<!--author: W3layouts
+author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+-->
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="UTF-8">
-		<title></title>
-		<link rel="stylesheet" href="css/login.css" />
+<head>
+<title>Transitive Register form  a Flat Responsive Widget Template :: w3layouts</title>
+<!-- metatags-->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="keywords" content="Transitive register form a Flat Responsive Widget,Login form widgets, Sign up Web forms , Login signup Responsive web form,Flat Pricing table,Flat Drop downs,Registration Forms,News letter Forms,Elements" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false);
+function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!-- Meta tag Keywords -->
+<link href="css/style.css" rel="stylesheet" type="text/css" media="all"/>
+<link rel="stylesheet" href="css/font-awesome.css"><!--font_wesome_icons-->
+<link href="//fonts.googleapis.com/css?family=Exo+2" rel="stylesheet"><!--online fonts-->
+<link href="//fonts.googleapis.com/css?family=PT+Sans" rel="stylesheet"><!--online fonts-->
+	<style type="text/css">
+		#yzm_img{
+			cursor:pointer;
+			width: 200px;
+			height: 40px;
+			margin: 5px 0 0 0;
+			border-radius: 3px;
+		}
+		#header-border {
+			width: 220px;
+			height: 198px;
+			background: url(images/liudehua.jpg) no-repeat;
+			background-size: cover;
+			border-radius: 50%;
+			margin: 20px auto;
+		}
+	</style>
+</head>
+<body>
+	
+	<div class="agile-main">
+		<div class="agile-left">
+				
+		</div>
+		<div class="agile-right">
 		
-		<style type="text/css">
-			#yzm_img{
-				cursor:pointer;
-				width: 100px;
-				height: 36px;
-				margin: 5px 0 0 5px;
-				border-radius: 3px;
-			}
-		</style>
-		
-	</head>
-	<body>
-		<!--登录容器开始-->
-		<div id="main">
-			<!--头像区开始-->
 			<div id="header-border">
 				
 			</div>
-			<!--头像区结束-->
-			<!--账号密码区开始-->
-			<div id="account">
-				<form action="" id="form1">
-					<div class="input">
-						<input type="text" id="empLoginName" name="empLoginName" placeholder="please input username" />
+			
+			<form action="#" method="post">
+				<div id="form1">
+					<div class="w3l-name">
+						<span><i class="fa fa-user" aria-hidden="true"></i></span>
+						<input type="text" id="loginName" name="loginName" placeholder="please input username"/>
 					</div>
-					<div class="input">
-						<input type="password" id="empPwd" name="empPwd" placeholder="please input password" />
+
+					<div class="w3l-psw">
+						<span><i class="fa fa-lock" aria-hidden="true"></i></span>
+						<input type="password" id="password" name="password" placeholder="please input password"/>
 					</div>
-				</form>
-				
-				<div class="input">
-					<input type="text" id="code" placeholder="请输入验证码(区分大小写)" name="code"/>
+					
+					
+					<div class="top-icons-agileits-w3layouts">
+						<select name="loginType" id="loginType" class="form-control">
+							<option value="">请输入登陆类型</option>
+							<option value="customer">顾客登录</option>
+							<option value="shop">商家登录</option>
+							<option value="manager">管理员登录</option>
+						</select>
+					</div>
+						
+					
 				</div>
+				<div class="clear"></div>
 				
 				<a href="javascript:getVerifiCode()">
-				    <img id="yzm_img" title="点击刷新验证码" src="/OA/getVerifiCode"/>
-				</a>	
-			</div>
-			<!--账号密码区结束-->
-			<!--登录按钮开始-->
-			<input type="button" value="Sign In" class="btn-login" />
-			<!--登录按钮结束-->
-			<!--登录区底部开始-->
-			<div id="footer">
-				<a href="#">Forget PassWord?</a>
-			</div>
-			<!--登录区底部结束-->
+				    <img id="yzm_img" title="点击刷新验证码" src="/mall/getVerifiCode"/>
+				</a>
+				
+				<div class="w3l-name">
+					<span><i class="fa fa-lock" aria-hidden="true"></i></span>
+					<input id="code" type="text" name="code" placeholder="请输入验证码"/>
+				</div>
+				<div class="clear"></div>
+				
+				
+				
+				<div class="w3l-submit">
+					<input id="loginBtn" type="button" value="Sign In" />
+				</div>
+			</form>
+			<div class="clear"></div>
+			
 		</div>
-		<!--登录容器结束-->
+		<div class="clear"></div>
+	</div>
+	
+	<div class="w3ls-headding">
+		<h1><span>s</span>econd-Hand <span>s</span>hop <span>s</span>ystem</h1>
+	</div>
+	
+	
+	<script type="text/javascript" src="js/jquery.js" ></script>
+	<script type="text/javascript" src="js/global.js" ></script>
+	<script type="text/javascript" src="js/bootstrap/js/bootstrap.js" ></script>
+	<script type="text/javascript" src="js/layer/layer.js" ></script>
+	<script>
+	
+		//锟斤拷录
+		var loginName = localStorage.getItem('loginName');
 		
+		if (loginName != null && loginName != '') {
+			$('loginName').val(loginName);
+		}
 		
-		<script type="text/javascript" src="js/jquery.js" ></script>
-		<script type="text/javascript" src="js/global.js" ></script>
-		<script type="text/javascript" src="js/bootstrap/js/bootstrap.js" ></script>
-		<script type="text/javascript" src="js/layer/layer.js" ></script>
-		<script>
+		var empPhoto = localStorage.getItem('empPhoto');
 		
-			//判断用户名是否有浏览器存储
-			var empLoginName = localStorage.getItem('empLoginName');
-			
-			if (empLoginName != null && empLoginName != '') {
-				$('#empLoginName').val(empLoginName);
-			}
-			
-			//判断头像是否有浏览器存储		
-			var empPhoto = localStorage.getItem('empPhoto');
-			
-			if (empPhoto != null && empPhoto != '') {
-				$('#header-border').css('background','url(' + empPhoto + ')');
-			}
+		if (empPhoto != null && empPhoto != '') {
+			$('#header-border').css('background','url(' + empPhoto + ')');
+		}
 		
+		var codeText;
+		
+		$('#loginBtn').click(function(){
 			
-			var codeText;
-			
-			$('.btn-login').click(function(){
+			$.ajax({
+				type:"get",
+				url:baseUrl + '/auth',
+				async:false,
+				dataType:'text'
+			})
+			.done(function(data,status,xhr){
+				codeText = data;
+			})
+			.fail(function(xhr,errorStatus,errorText){
+				alert(errorStatus + ',' + errorText);
+			});
+							
+			var code = $('#code').val();
+			if( code.toLowerCase() != codeText.toLowerCase() ){
 				
-				$.ajax({
-					type:"get",
-					url:baseUrl + '/auth',
-					async:false,
-					dataType:'text'
-				})
-				.done(function(data,status,xhr){
-					codeText = data;
-				})
-				.fail(function(xhr,errorStatus,errorText){
-					alert(errorStatus + ',' + errorText);
-				});
-								
-				var code = $('#code').val();
+				layer.msg('');
+				$("#yzm_img").prop('src', baseUrl+'/getVerifiCode?a='+new Date().getTime());
+				$('#code').val('');
+				$('#code').focus();
 				
-				if( code != codeText ){
-					layer.msg('验证码输入不正确，请重新输入');
-					$("#yzm_img").prop('src', baseUrl+'/getVerifiCode?a='+new Date().getTime());
-					$('#code').val('');
-					$('#code').focus();
-					
-					return;
-				}
+				return;
+			}
 
-				var url = baseUrl + '/employee/login';
+			var url = baseUrl + '/employee/login';
+			
+			var params = {
+				empLoginName:$('#empLoginName').val(),
+				empPwd:$('#empPwd').val()
+			}
+									
+			$.post(url,params,function(data) {
 				
-				var params = $('#form1').serialize();
-				
-				$.post(url,params,function(data) {
+				if (data == 1) {
+					layer.msg('');
+				} else if (data == 2) {
+					layer.msg('');
+				} else {
 					
-					if (data == 1) {
-						layer.msg('用户名不存在');
-					} else if (data == 2) {
-						layer.msg('密码错误');
-					} else {
-						
-						//用户名存储到浏览器
-						localStorage.setItem('empLoginName',$('#empLoginName').val());
-						
-						//读取用户头像存储到浏览器
-						$.get(baseUrl + '/employee/queryHead',function(data){
-							
-							if (data != null && data != '') {
-								localStorage.setItem('empPhoto',data);
-							} else {
-								localStorage.removeItem('empPhoto');
-							}
-							
-						})
-						.error(function(){
-							layer.msg('请求头像出错');
-						});						
-						
-						layer.msg('登录成功');
-						
-						setTimeout(function(){
-							location.href = 'mainTest.html';
-						},500);
-					}										
+					//
+					localStorage.setItem('empLoginName',$('#empLoginName').val());
 					
-				})
-				.error(function(){					
-					layer.msg('请求失败');					
-				});
+					//
+					$.get(baseUrl + '/employee/queryHead',function(data){
+						
+						if (data != null && data != '') {
+							localStorage.setItem('empPhoto',data);
+						} else {
+							localStorage.removeItem('empPhoto');
+						}
+						
+					})
+					.error(function(){
+						layer.msg('');
+					});						
+					
+					layer.msg('');
+					
+					setTimeout(function(){
+						location.href = 'mainTest.html';
+					},500);
+				}										
 				
-				
+			})
+			.error(function(){					
+				layer.msg('');					
 			});
 			
 			
-			function getVerifiCode() {
-			    $("#yzm_img").prop('src', baseUrl+'/getVerifiCode?a='+new Date().getTime());
-			}
-			
-			
-		</script>
+		});
 		
-	</body>
+		
+		function getVerifiCode() {
+		    $("#yzm_img").prop('src', baseUrl+'/getVerifiCode?a='+new Date().getTime());
+		}
+		
+		
+	</script>
+	
+</body>
 </html>

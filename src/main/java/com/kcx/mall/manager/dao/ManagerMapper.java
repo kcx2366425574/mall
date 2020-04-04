@@ -2,6 +2,8 @@ package com.kcx.mall.manager.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.kcx.mall.manager.pojo.Manager;
 
 /**
@@ -31,4 +33,7 @@ public interface ManagerMapper {
 	
 	//查询所有的管理员
 	List<Manager> queryAll();
+	
+	//上传头像
+	void updateHead(@Param("manaName")String manaName,@Param("manaPhoto")String manaPhoto);
 }

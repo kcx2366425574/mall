@@ -40,6 +40,12 @@
 		where mana_id = #{manaId,jdbcType=INTEGER}
 	</update>
 	
+	<update id="updateHead">
+		update manager set 
+		mana_photo  = #{manaPhoto,jdbcType=LONGVARCHAR}
+		where mana_name = #{manaName,jdbcType=VARCHAR}
+	</update>
+	
 	<select id="queryById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select *
     from manager

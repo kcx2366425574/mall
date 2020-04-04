@@ -1,6 +1,7 @@
 package com.kcx.mall.product.pojo;
 
 import com.kcx.mall.customer.pojo.Customer;
+import com.kcx.mall.manager.pojo.Manager;
 import com.kcx.mall.shop.pojo.Shop;
 
 public class Product {
@@ -16,14 +17,15 @@ public class Product {
 
     private Shop proShop;
 
-    private Integer proPtId;
+    private ProType proPt;
 
     private String proState;
 
-    private Integer proManaId;
+    private Manager proMana;
 
     private String proPic;
 
+    //--------------getters and setters----
     public Integer getProId() {
         return proId;
     }
@@ -72,12 +74,12 @@ public class Product {
         this.proShop = proShop;
     }
 
-    public Integer getProPtId() {
-        return proPtId;
+    public ProType getProPt() {
+        return proPt;
     }
 
-    public void setProPtId(Integer proPtId) {
-        this.proPtId = proPtId;
+    public void setProPt(ProType proPt) {
+        this.proPt = proPt;
     }
 
     public String getProState() {
@@ -88,12 +90,12 @@ public class Product {
         this.proState = proState == null ? null : proState.trim();
     }
 
-    public Integer getProManaId() {
-        return proManaId;
+    public Manager getProMana() {
+        return proMana;
     }
 
-    public void setProManaId(Integer proManaId) {
-        this.proManaId = proManaId;
+    public void setProMana(Manager proMana) {
+        this.proMana = proMana;
     }
 
     public String getProPic() {
@@ -103,4 +105,48 @@ public class Product {
     public void setProPic(String proPic) {
         this.proPic = proPic == null ? null : proPic.trim();
     }
+
+    //---------构造方法------------
+	public Product() {
+		super();
+	}
+
+	public Product(String proName, Float proPrice, String proInfo, Customer proCus, Shop proShop, ProType proPt,
+			String proState, Manager proMana, String proPic) {
+		super();
+		this.proName = proName;
+		this.proPrice = proPrice;
+		this.proInfo = proInfo;
+		this.proCus = proCus;
+		this.proShop = proShop;
+		this.proPt = proPt;
+		this.proState = proState;
+		this.proMana = proMana;
+		this.proPic = proPic;
+	}
+
+	public Product(Integer proId, String proName, Float proPrice, String proInfo, Customer proCus, Shop proShop,
+			ProType proPt, String proState, Manager proMana, String proPic) {
+		super();
+		this.proId = proId;
+		this.proName = proName;
+		this.proPrice = proPrice;
+		this.proInfo = proInfo;
+		this.proCus = proCus;
+		this.proShop = proShop;
+		this.proPt = proPt;
+		this.proState = proState;
+		this.proMana = proMana;
+		this.proPic = proPic;
+	}
+
+	@Override
+	public String toString() {
+		return "Product [proId=" + proId + ", proName=" + proName + ", proPrice=" + proPrice + ", proInfo=" + proInfo
+				+ ", proCus=" + proCus + ", proShop=" + proShop + ", proPt=" + proPt + ", proState=" + proState
+				+ ", proMana=" + proMana + ", proPic=" + proPic + "]";
+	}
+    
+	
+    
 }

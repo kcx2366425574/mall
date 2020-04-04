@@ -26,6 +26,9 @@ public class Shop {
     private String shopState;
     //商家入驻审核管理员id
     private Manager shopMana;
+    
+    //商家图标
+    private String shopPhoto;
 
     //----------------getters and setters------------------
     public Integer getShopId() {
@@ -43,8 +46,18 @@ public class Shop {
     public void setShopName(String shopName) {
         this.shopName = shopName == null ? null : shopName.trim();
     }
+    
+    
 
-    public String getShopMinname() {
+    public String getShopPhoto() {
+		return shopPhoto;
+	}
+
+	public void setShopPhoto(String shopPhoto) {
+		this.shopPhoto = shopPhoto;
+	}
+
+	public String getShopMinname() {
         return shopMinname;
     }
 
@@ -150,6 +163,25 @@ public class Shop {
 		this.shopAccount = shopAccount;
 		this.shopState = shopState;
 		this.shopMana = shopMana;
+	}
+	
+	
+
+	public Shop(String shopName, String shopMinname, String shopPassword, String shopInfo, String shopAddress,
+			String shopOwner, String shopOwnerIdcard, Float shopAccount, String shopState, Manager shopMana,
+			String shopPhoto) {
+		super();
+		this.shopName = shopName;
+		this.shopMinname = shopMinname;
+		this.shopPassword = shopPassword;
+		this.shopInfo = shopInfo;
+		this.shopAddress = shopAddress;
+		this.shopOwner = shopOwner;
+		this.shopOwnerIdcard = shopOwnerIdcard;
+		this.shopAccount = shopAccount;
+		this.shopState = shopState;
+		this.shopMana = shopMana;
+		this.shopPhoto = shopPhoto;
 	}
 
 	public Shop(Integer shopId, String shopName, String shopMinname, String shopPassword, String shopInfo,

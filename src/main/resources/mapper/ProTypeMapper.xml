@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kcx.mall.product.dao.ProTypeMapper" >
+  <resultMap id="BaseResultMap" type="com.kcx.mall.product.pojo.ProType" >
+    <id column="pt_id" property="ptId" jdbcType="INTEGER" />
+    <result column="pt_name" property="ptName" jdbcType="VARCHAR" />
+    <result column="pt_info" property="ptInfo" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <insert id="add" parameterType="com.kcx.mall.product.pojo.ProType">
+  	insert into pro_type (pt_id,pt_name,pt_info)
+		values 
+		(default,
+		#{ptName,jdbcType=VARCHAR},
+		#{ptInfo,jdbcType=VARCHAR})
+  </insert>
+  
+  <delete id="deleteById" parameterType="java.lang.Integer">
+		delete from pro_type where pt_id = #{ptId,jdbcType=INTEGER}
+	</delete>
+	
+	<delete id="deleteMany" parameterType="Integer[]">
+		delete from pro_type where pt_id in
+		<foreach collection="array" index="i" item="ptId" open="("
+			close=")" separator=",">
+			#{ptId}
+		</foreach>
+	</delete>
+	
+	<select id="queryById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+	    select *
+	    from pro_type
+	    where pt_id = #{ptId,jdbcType=INTEGER}
+  </select>
+  
+  <select id="getAllAcount" resultType="java.lang.Integer" >
+	    select count(*)
+	    from pro_type
+  </select>
+  
+  <select id="queryAll" resultMap="BaseResultMap" >
+    select *
+    from pro_type
+    LIMIT #{start}, #{pageSize}
+  </select>
+  
+  
+  <update id="update" parameterType="com.kcx.mall.product.pojo.ProType">
+		update pro_type set 
+		pt_name = #{ptName,jdbcType=VARCHAR},
+		pt_info = #{ptInfo,jdbcType=VARCHAR}
+		where pt_id = #{ptId,jdbcType=INTEGER}
+	</update>
+</mapper>

@@ -17,6 +17,9 @@ public class Manager {
 
     //管理员登录状态，是否在线
     private Boolean manaIson;
+    
+    //管理员头像
+    private String manaPhoto;
 
     //-----------------------getters and setters
     public Integer getManaId() {
@@ -50,6 +53,15 @@ public class Manager {
     public void setManaIson(Boolean manaIson) {
         this.manaIson = manaIson;
     }
+    
+    public String getManaPhoto() {
+		return manaPhoto;
+	}
+
+	public void setManaPhoto(String manaPhoto) {
+		this.manaPhoto = manaPhoto;
+	}
+    
 
     //--------------------------构造方法
 
@@ -63,6 +75,24 @@ public class Manager {
 		this.manaName = manaName;
 		this.manaPassword = manaPassword;
 		this.manaIson = manaIson;
+	}
+	
+
+	public Manager(String manaName, String manaPassword, Boolean manaIson, String manaPhoto) {
+		super();
+		this.manaName = manaName;
+		this.manaPassword = manaPassword;
+		this.manaIson = manaIson;
+		this.manaPhoto = manaPhoto;
+	}
+
+	public Manager(Integer manaId, String manaName, String manaPassword, Boolean manaIson, String manaPhoto) {
+		super();
+		this.manaId = manaId;
+		this.manaName = manaName;
+		this.manaPassword = manaPassword;
+		this.manaIson = manaIson;
+		this.manaPhoto = manaPhoto;
 	}
 
 	public Manager(Integer manaId, String manaName, String manaPassword, Boolean manaIson) {

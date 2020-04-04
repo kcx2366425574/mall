@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kcx.mall.product.dao.ProductMapper" >
+  <resultMap id="BaseResultMap" type="com.kcx.mall.product.pojo.Product" >
+    <id column="pro_id" property="proId" jdbcType="INTEGER" />
+    <result column="pro_name" property="proName" jdbcType="VARCHAR" />
+    <result column="pro_price" property="proPrice" jdbcType="REAL" />
+    <result column="pro_info" property="proInfo" jdbcType="VARCHAR" />
+    <result column="pro_state" property="proState" jdbcType="VARCHAR" />
+    
+    <!-- 多对一映射必须写在resultMap最后面 -->
+	<!-- 用户映射 -->
+	<association property="proCus" javaType="com.kcx.mall.customer.pojo.Customer">
+		<id column="cus_id" property="cusId" jdbcType="INTEGER" />
+		<result column="cus_login_name" property="cusLoginName" jdbcType="VARCHAR" />
+	</association>
+	
+	<!-- 商店映射 -->
+	<association property="proShop" javaType="com.kcx.mall.shop.pojo.Shop">
+		<id column="shop_id" property="shopId" jdbcType="INTEGER" />
+		<result column="shop_name" property="shopName" jdbcType="VARCHAR" />
+	</association>
+	
+	<!-- 商品类型映射 -->
+	<association property="proType" javaType="com.kcx.mall.product.pojo.ProType">
+		<id column="pt_id" property="ptId" jdbcType="INTEGER" />
+		<result column="pt_name" property="ptName" jdbcType="VARCHAR" />
+	</association>
+	
+	<!-- 管理员映射 -->
+	<association property="proMana" javaType="com.kcx.mall.manager.pojo.Manager">
+		<id column="mana_id" property="manaId" jdbcType="INTEGER" />
+		<result column="mana_name" property="manaName" jdbcType="VARCHAR" />
+	</association>
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.kcx.mall.product.pojo.Product" extends="BaseResultMap" >
+    <result column="pro_pic" property="proPic" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  
+  <!-- 插入数据 -->
+	<insert id="addProduct" parameterType="com.kcx.mall.product.pojo.Product">
+		insert into product (pro_id,
+		pro_name, pro_price, pro_info, pro_cus_id,
+		pro_shop_id,pro_pt_id,pro_state,
+		pro_pic, pro_mana_id)
+		values(default, #{proName,jdbcType=VARCHAR},
+		#{proPrice,jdbcType=FLOAT},#{proInfo,jdbcType=VARCHAR},#{proCus.cusId,jdbcType=INTEGER},
+		#{proShop.shopId,jdbcType=INTEGER}, #{proPt.ptId,jdbcType=INTEGER},
+		#{proState,jdbcType=VARCHAR}, #{proPic,jdbcType=LONGVARCHAR},
+		#{proMana.manaId,jdbcType=INTEGER})
+	</insert>
+	
+	<delete id="deleteProduct" parameterType="java.lang.Integer">
+	  delete from product where pro_id = #{proId}
+	</delete>
+	
+	<delete id="deleteMany" parameterType="Integer[]">
+		delete from product where pro_id in
+		<foreach collection="array" index="i" item="proId" open="("
+			close=")" separator=",">
+			#{proId}
+		</foreach>
+	</delete>
+	
+	<update id="updateProduct" parameterType="com.kcx.mall.product.pojo.Product">
+		update product set 
+		pro_name = #{proName,jdbcType=VARCHAR},
+		pro_price  = #{proPrice,jdbcType=FLOAT},
+		pro_info = #{proInfo,jdbcType=VARCHAR},
+		pro_pt_id = #{proPtId,jdbcType=INTEGER},
+		pro_state = #{proState,jdbcType=VARCHAR},
+		pro_pic = #{proPic,jdbcType=LONGVARCHAR},
+		pro_mana_id = #{proManaId,jdbcType=INTEGER}
+		where pro_id = #{proId,jdbcType=INTEGER}
+	</update>
+	
+	<update id="updateMany" parameterType="Integer[]">
+		update product set 
+		pro_state = #{proState,jdbcType=VARCHAR},
+		pro_mana_id = #{proManaId,jdbcType=INTEGER}
+		where pro_id in
+		<foreach collection="array" index="i" item="proId" open="("
+			close=")" separator=",">
+			#{proId}
+		</foreach>
+	</update>
+	
+	<select id="queryById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select *
+    from product
+    where pro_id = #{proId,jdbcType=INTEGER}
+  </select>
+  
+</mapper>
