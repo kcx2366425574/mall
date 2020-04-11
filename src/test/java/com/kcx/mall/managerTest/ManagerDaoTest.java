@@ -2,10 +2,12 @@ package com.kcx.mall.managerTest;
 
 import java.util.List;
 
+import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.kcx.mall.common.Pager;
 import com.kcx.mall.manager.dao.ManagerMapper;
 import com.kcx.mall.manager.pojo.Manager;
 
@@ -25,7 +27,7 @@ public class ManagerDaoTest {
 	 */
 	@Test
 	public void testadd() {
-		Manager manager = new Manager("ceshi", "123456", false);
+		Manager manager = new Manager("ceshi", "123456", false,"啥事也不干");
 		mapper.addMana(manager);
 	}
 	
@@ -54,7 +56,7 @@ public class ManagerDaoTest {
 	 */
 	@Test
 	public void testUpdate() {
-		Manager manager = new Manager(1, "super", "12345678", false);
+		Manager manager = new Manager(1, "super", "12345678", false,"啥事也能干的超级管理员");
 		mapper.update(manager);
 	}
 	
@@ -81,9 +83,22 @@ public class ManagerDaoTest {
 	 */
 	@Test
 	public void testQueryAll() {
-		List<Manager> list = mapper.queryAll();
+		List<Manager> list = mapper.queryAll(1,10);
 		for (Manager manager : list) {
 			System.out.println(manager);
+		}
+	}
+	
+	/**
+	 * 密码加密
+	 */
+	@Test
+	public void testPwd() {
+		Pager pager = new Pager(mapper.getAllAcount(), 10, 1);
+		List<Manager> list = mapper.queryAll(0, pager.getPageSize());
+		for (Manager manager : list) {
+			manager.setManaPassword(new Sha256Hash(manager.getManaPassword(), "我有一只小花猫", 10).toBase64());
+			mapper.update(manager);
 		}
 	}
 }

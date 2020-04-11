@@ -11,7 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.kcx.mall.commom.Pager;
+import com.kcx.mall.common.Pager;
 import com.kcx.mall.perm.pojo.ManaRole;
 import com.kcx.mall.perm.pojo.Role;
 import com.kcx.mall.perm.service.ManaRoleService;

@@ -1,22 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:mvc="http://www.springframework.org/schema/mvc"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
-		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
 
-<!-- ##########shiro框架配置########## 开始 -->
+	<!-- ##########shiro框架配置########## 开始 -->
 	
 	<!-- 生命周期对象 -->
 	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
 	
 	<!-- shiro的realm类 -->
-	<bean id="shiroRealm" class="com.icss.oa.common.ShiroRealm"/>
+	<bean id="shiroRealm" class="com.kcx.mall.common.ShiroRealm"/>
 	
 	<!-- 配置缓存，只会查询一次当前用户的授权，然后放到缓存中，以后都是从缓存中查询当前用户的权限 -->
-	<bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager" />
+	<bean id="cacheManager" class="org.apache.shiro.cache.MemoryConstrainedCacheManager" />
 	
 	<!-- 安全管理器对象 -->
 	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
@@ -52,9 +48,9 @@
 		<!-- 登陆页的url -->
 		<property name="loginUrl" value="/logout.jsp" />
 		
-		<!-- 登陆成功跳转的页（可选） -->
+		<!-- 登陆成功跳转的页（可选） 
 		<property name="successUrl" value="/Main.html" />
-		
+		-->
 		<!-- 权限验证失败跳转的url -->
 		<property name="unauthorizedUrl" value="/failed.jsp" />
 		
@@ -62,8 +58,10 @@
 		<property name="filterChainDefinitions">
 			<value>	
 				/ = anon
-				/loginTest.html = anon
-				/employee/login* = anon
+				/login.html = anon
+				/manager/login* = anon
+				/shop/login* = anon
+				/customer/login* = anon
 				/css/** = anon
 				/images/** = anon				
 				/js/** = anon
@@ -71,93 +69,6 @@
 				/getVerifiCode = anon
 				/auth = anon
 				/fonts/* = anon
-				
-				<!-- 部门权限 -->
-				/system/AddDept.html* = authc,perms[dept:add]
-				/system/UpdateDept.html* = authc,perms[dept:update]		
-				
-				/dept/add = authc,perms[dept:add]
-				/dept/update = authc,perms[dept:update]				
-				/dept/delete = authc,perms[dept:delete]
-				
-				<!-- 员工权限 -->
-				/system/AddEmployee.html* = authc,perms[emp:add]		
-				
-				/employee/add = authc,perms[emp:add]
-				/employee/delete = authc,perms[emp:delete]
-				/employee/deleteMany = authc,perms[emp:delete]
-				/employee/update = authc,perms[emp:update]
-				
-				<!-- 职务权限 -->
-				/system/AddJob.html* = authc,perms[job:add]
-				/system/UpdateJob.html* = authc,perms[job:update]
-				
-				/job/add = authc,perms[job:add]
-				/job/update = authc,perms[job:update]
-				/job/delete = authc,perms[job:delete]
-				
-				<!-- 审批权限 -->
-				/vet/VetConfirmAddMes.html* = authc,perms[vet:all]
-				/vet/VetMeeting.html* = authc,perms[vet:all]
-				/vet/VetQueryMeeting.html* = authc,perms[vet:all]
-				/vet/VetQueryMeetingEmp.html* = authc,perms[vet:all]
-				/vet/VetUpdateVehicleUse.html* = authc,perms[vet:all]
-				/vet/VetVehicleUse.html* = authc,perms[vet:all]		
-				
-				<!-- 部门计划权限 -->
-				/plan/AddPlan.html* = authc,perms[plan:add]
-				/plam/UpdatePlan.html* = authc,perms[plan:update]
-				
-				/plan/add = authc,perms[plan:add]
-				/plan/delete = authc,perms[plan:delete]
-				/plan/update = authc,perms[plan:update]
-				
-				<!-- 分配任务权限 -->
-				
-				<!-- 库存权限 -->
-				/stock/AddStock.html* = authc,perms[stock:add]
-				/stock/UpdateStock.html* = authc,perms[stock:update]
-				/stock/AddStockRecord.html* = authc,perms[stockRecord:add]
-				/stock/UpdateStockRecord.html* = authc,perms[stockRecord:update]
-				/analyse/StockAnalyse.html* = authc,perms[analyse:query]
-				/stock/QueryStock.jsp* = authc,perms[stock:query]
-				/stock/QueryStockRecord.jsp* = authc,perms[stock:query]
-				
-				/stock/add = authc,perms[stock:add]
-				/stock/update = authc,perms[stock:update]
-				/srd/add = authc,perms[stockRecord:add]
-				/srd/update = authc,perms[stockRecord:update]
-				/stock/query = authc,perms[stock:query]
-				/srd/query = authc,perms[stock:query]
-				
-				<!-- 公告权限 -->
-				/system/AddNotice.html* = authc,perms[notice:add]
-				/system/UpdateNotice.html* = authc,perms[notice:update]
-				
-				/notice/add = authc,perms[notice:add]
-				/notice/update = authc,perms[notice:update]
-				/notice/delete = authc,perms[notice:delete]
-				
-				<!-- 车辆权限 -->
-				/vehicle/AddVehicle.html* = authc,perms[vehicle:add]
-				/vehicle/QueryVehicleUse.html* = authc,perms[vehicleUse:query]
-				
-				/vehicle/add = authc,perms[vehicle:add]
-				/vehicle/delete = authc,perms[vehicle:delete]
-				/vehicle/update = authc,perms[vehicle:update]
-				/veh/queryByCondition = authc,perms[vehicleUse:query]
-				
-				<!-- 会议权限 -->
-				/meeting/AddMeetingRoom.html* = authc,perms[meetingRoom:add]
-				/meeting/UpdateMeetingRoom* = authc,perms[meetingRoom:update]
-				
-				/meetingRoom/add = authc,perms[meetingRoom:add]
-				/meetingRoom/delete = authc,perms[meetingRoom:delete]
-				/meetingRoom/update = authc,perms[meetingRoom:update]
-				/meeting/add = authc,perms[meetinf:add]
-				/meeting/delete = authc,perms[meeting:delete]
-				/meeting/update = authc,perms[meeting:update]
-				/meetingEmp/add = authc,perms[meeting:addMeetingEmp]
 				
 				<!-- 最高权限 -->
 				/perm/* = authc,perms[perm:all]
@@ -174,6 +85,5 @@
             </map>  
         </property>
 	</bean>	
-
 
 </beans>

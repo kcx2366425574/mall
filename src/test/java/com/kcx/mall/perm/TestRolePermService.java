@@ -7,7 +7,7 @@ import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.kcx.mall.commom.Pager;
+import com.kcx.mall.common.Pager;
 import com.kcx.mall.perm.pojo.Permission;
 import com.kcx.mall.perm.pojo.RolePerm;
 import com.kcx.mall.perm.service.RolePermService;

@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.kcx.mall.common.Pager;
 import com.kcx.mall.manager.pojo.Manager;
 import com.kcx.mall.manager.service.ManagerService;
 
@@ -25,7 +26,7 @@ public class ManagerServiceTest {
 	 */
 	@Test
 	public void testadd() {
-		Manager manager = new Manager("ceshi", "123456", false);
+		Manager manager = new Manager("ceshi", "123456", false,"啥事也不干");
 		service.insertManager(manager);
 	}
 	
@@ -43,7 +44,7 @@ public class ManagerServiceTest {
 	@Test
 	public void testDeleteMany() {
 		for (int i = 0; i < 3; i++) {
-			Manager manager = new Manager("ceshi"+i, "123456", false);
+			Manager manager = new Manager("ceshi"+i, "123456", false,"啥事也不干");
 			service.insertManager(manager);
 		}
 		service.deleteMany(new int[] {3,4,5});
@@ -54,7 +55,7 @@ public class ManagerServiceTest {
 	 */
 	@Test
 	public void testUpdate() {
-		Manager manager = new Manager(1, "super", "12345678", false);
+		Manager manager = new Manager(1, "super", "12345678", false,"啥事也能干的超级管理员,啥事也敢干");
 		service.updateManager(manager);
 	}
 	
@@ -81,7 +82,9 @@ public class ManagerServiceTest {
 	 */
 	@Test
 	public void testQueryAll() {
-		List<Manager> list = service.queryAll();
+		int count = service.getAllAcount();
+		Pager pager = new Pager(count, 10, 1);
+		List<Manager> list = service.queryAll(pager);
 		for (Manager manager : list) {
 			System.out.println(manager);
 		}

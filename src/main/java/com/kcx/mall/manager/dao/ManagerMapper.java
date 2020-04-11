@@ -32,7 +32,10 @@ public interface ManagerMapper {
 	Manager queryByLoginName(String manaName);
 	
 	//查询所有的管理员
-	List<Manager> queryAll();
+	List<Manager> queryAll(@Param("start") int start, @Param("pageSize") int pageSize);
+	
+	//得到manager总数
+	int getAllAcount();
 	
 	//上传头像
 	void updateHead(@Param("manaName")String manaName,@Param("manaPhoto")String manaPhoto);

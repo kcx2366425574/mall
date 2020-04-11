@@ -1,5 +1,4 @@
-package com.kcx.mall.commom;
-
+package com.kcx.mall.common;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -23,9 +22,9 @@ import com.kcx.mall.perm.service.RoleService;
 
 /**
  * shiro的核心Realm（验证登录 和 查询读取当前登录的角色和权限）
- * 
+ * @date 2020-04-07
  * @author kcx
- *
+ * @description 
  */
 public class ShiroRealm extends AuthorizingRealm {
 
@@ -45,9 +44,9 @@ public class ShiroRealm extends AuthorizingRealm {
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
 
 		// 获得当前用户名
-		String manaName = (String) this.getAvailablePrincipal(principalCollection);
+		String loginName = (String) this.getAvailablePrincipal(principalCollection);
 
-		System.out.println("进行授权..." + manaName);
+		System.out.println("进行授权..." + loginName);
 		
 		//通过用户名去获得用户的所有的授权信息，把授权信息存储到AuthorizationInfo对象中
 		SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
@@ -55,7 +54,7 @@ public class ShiroRealm extends AuthorizingRealm {
 		//设置角色
 		HashSet<String> roleSet = new HashSet<>();
 		//查询当前用户所有的角色
-		List<Map<String, Object>> roleList = roleService.queryRole(manaName);
+		List<Map<String, Object>> roleList = roleService.queryRole(loginName);
 		
 		for (Map map : roleList) {
 			roleSet.add( (String) map.get("role_name") );
@@ -67,7 +66,7 @@ public class ShiroRealm extends AuthorizingRealm {
 		//设置权限
 		HashSet<String> permSet = new HashSet<>();		
 		//查询当前用户的所有权限
-		List<Map<String, Object>> permList = permService.queryPerm(manaName);
+		List<Map<String, Object>> permList = permService.queryPerm(loginName);
 		
 		for (Map map : permList) {
 			permSet.add( (String) map.get("perm_name") );
@@ -89,13 +88,13 @@ public class ShiroRealm extends AuthorizingRealm {
 		// 获得用户名和密码
 		UsernamePasswordToken upToken = (UsernamePasswordToken) authenticationToken;
 
-		String manaName = upToken.getUsername();
+		String loginName = upToken.getUsername();
 		String manaPassword = String.valueOf(upToken.getPassword());
 
-		System.out.println("进行登陆验证..." + manaName);
+		System.out.println("进行登陆验证..." + loginName);
 		
 		// 验证登陆
-		int result = manaService.checkLogin(manaName, manaPassword);
+		int result = manaService.checkLogin(loginName, manaPassword);
 
 		if (result == 1) {
 			// 用户名不存在
@@ -103,9 +102,11 @@ public class ShiroRealm extends AuthorizingRealm {
 		} else if (result == 2) {
 			// 密码错误
 			throw new IncorrectCredentialsException();
+		} else if(manaService.queryByLoginName(loginName).getManaIson()){
+			throw new UnknownAccountException();			
 		} else {
 			// 登陆成功，返回info对象
-			SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(manaName, manaPassword.toCharArray(), getName());
+			SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(loginName,manaPassword.toCharArray(), getName());
 			;
 			return info;
 		}

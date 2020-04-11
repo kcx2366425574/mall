@@ -1,5 +1,6 @@
 package com.kcx.mall.manager.controller;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.kcx.mall.common.Pager;
 import com.kcx.mall.manager.pojo.Manager;
 import com.kcx.mall.manager.service.ManagerService;
 
@@ -41,13 +43,14 @@ public class ManagerController {
 	 */
 	@RequestMapping("/manager/login")
 	@ResponseBody
-	public Integer login(HttpServletRequest request, HttpServletResponse response, String manaName, String manaPassword) {
+	public Integer login(HttpServletRequest request, HttpServletResponse response, String loginName, String pwd) {
 
+		System.out.println("管理员在登陆");
 		// 密码加密
-		manaPassword = new Sha256Hash(manaPassword, "我有一只小花猫", 10).toBase64();
+		pwd = new Sha256Hash(pwd, "我有一只小花猫", 10).toBase64();
 
 		// 封装用户名和密码
-		UsernamePasswordToken upToken = new UsernamePasswordToken(manaName, manaPassword);
+		UsernamePasswordToken upToken = new UsernamePasswordToken(loginName, pwd);
 
 		// Shiro登陆
 		Subject subject = SecurityUtils.getSubject();
@@ -60,17 +63,17 @@ public class ManagerController {
 			return 2;
 		}
 		
-		Manager mana = service.queryByLoginName(manaName);
+		Manager mana = service.queryByLoginName(loginName);
 		if(mana.getManaIson()) return 4;
 		
 		mana.setManaIson(true);
 		
 		// 如果登录成功，session中记录当前管理员的登录名（管理员id）
 		HttpSession session = request.getSession();
-		session.setAttribute("manaName", manaName); // 记录管理员登录名
-
+		session.setAttribute("loginName", loginName); // 记录管理员登录名
+		session.setAttribute("loginType", "manager");
 		session.setAttribute("manaId", mana.getManaId()); // 记录管理员id
-
+		System.out.println("这是session中的"+loginName+"还有id:"+mana.getManaId());
 		return 3;
 	}
 	
@@ -108,10 +111,31 @@ public class ManagerController {
 		return service.queryById(manaId);
 	}
 	
-	//得到所有管理员,不提供分页功能
+	//根据登录名查询
+	@RequestMapping("/manager/queryByName")
+	@ResponseBody
+	public Manager queryByLoginName(String manaName) {
+		return service.queryByLoginName(manaName);
+	}
+	
+	//得到所有管理员,提供分页功能
 	@RequestMapping("/manager/getAll")
 	@ResponseBody
-	public List<Manager> getAll(HttpServletRequest request, HttpServletResponse response) {
-		return service.queryAll();
+	public HashMap<String, Object> getAll(HttpServletRequest request, HttpServletResponse response,Integer pageNum,
+			Integer pageSize) {
+		if (pageNum == null)
+			pageNum = 1;
+		if (pageSize == null)
+			pageSize = 10;
+		int count = service.getAllAcount();
+		Pager pager = new Pager(count, pageSize, pageNum);
+		List<Manager> list = service.queryAll(pager);
+		
+		// 在Map集合中存储分页数据和名片数据
+		HashMap<String, Object> map = new HashMap<>();
+		map.put("pager", pager);
+		map.put("list", list);
+
+		return map;
 	}
 }

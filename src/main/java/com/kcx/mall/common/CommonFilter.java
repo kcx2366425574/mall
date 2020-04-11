@@ -1,4 +1,4 @@
-package com.kcx.mall.commom;
+package com.kcx.mall.common;
 
 import java.io.IOException;
 import javax.servlet.Filter;
@@ -45,9 +45,11 @@ public class CommonFilter implements Filter {
 		//判断是否是不需要登录验证的uri	
 		
 		if (!uri.equals(app + "/") 
-				&& !uri.equals(app + "/loginTest.html")
+				&& !uri.equals(app + "/login.html")
 				&& !uri.equals(app + "/logout.jsp")
-				&& !uri.equals(app + "/employee/login")
+				&& !uri.equals(app + "/manager/login")
+				&& !uri.equals(app + "/customer/login")
+				&& !uri.equals(app + "/shop/login")
 				&& !uri.startsWith(app + "/css")
 				&& !uri.startsWith(app + "/getVerifiCode")
 				&& !uri.startsWith(app + "/auth")
@@ -59,9 +61,9 @@ public class CommonFilter implements Filter {
 			
 			//登录判断
 			HttpSession session = request.getSession();			
-			String empLoginName = (String) session.getAttribute("empLoginName");
-						
-			if (empLoginName == null) {
+			String loginName = (String) session.getAttribute("loginName");
+			System.out.println(loginName+"这是管理员loginName");			
+			if (loginName == null) {
 				
 				//判断是否是ajax请求
 				String xhr = request.getHeader("x-requested-with");
@@ -69,6 +71,7 @@ public class CommonFilter implements Filter {
 				if (xhr != null && xhr.equals("XMLHttpRequest")) {					
 					response.setHeader("sessionStatus", "timeout");	//响应前端一个自定义报头信息					
 				} else {
+					System.out.println("这是commonfilter中的重定向");
 					response.sendRedirect(app + "/logout.jsp"); //重定向到登录页
 				}
 				

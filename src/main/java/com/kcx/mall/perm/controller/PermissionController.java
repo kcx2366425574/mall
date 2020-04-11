@@ -13,7 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.kcx.mall.commom.Pager;
+import com.kcx.mall.common.Pager;
 import com.kcx.mall.perm.pojo.Permission;
 import com.kcx.mall.perm.service.PermissionService;
 

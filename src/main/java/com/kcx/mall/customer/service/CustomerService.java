@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.kcx.mall.commom.Pager;
+import com.kcx.mall.common.Pager;
 import com.kcx.mall.customer.dao.CustomerMapper;
 import com.kcx.mall.customer.pojo.Customer;
 

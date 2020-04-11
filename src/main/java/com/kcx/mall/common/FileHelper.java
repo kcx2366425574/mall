@@ -1,4 +1,4 @@
-package com.kcx.mall.commom;
+package com.kcx.mall.common;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;

@@ -44,9 +44,6 @@ function hideURLbar(){ window.scrollTo(0,1); } </script>
 		</div>
 		<div class="agile-right">
 		
-			<div id="header-border">
-				
-			</div>
 			
 			<form action="#" method="post">
 				<div id="form1">
@@ -61,8 +58,8 @@ function hideURLbar(){ window.scrollTo(0,1); } </script>
 					</div>
 					
 					
-					<div class="top-icons-agileits-w3layouts">
-						<select name="loginType" id="loginType" class="form-control">
+					<div class="w3l-submit" id="loginTypeForm">
+						<select name="loginType" id="loginType" class="w3l-name">
 							<option value="">请输入登陆类型</option>
 							<option value="customer">顾客登录</option>
 							<option value="shop">商家登录</option>
@@ -107,23 +104,18 @@ function hideURLbar(){ window.scrollTo(0,1); } </script>
 	<script type="text/javascript" src="js/layer/layer.js" ></script>
 	<script>
 	
-		//锟斤拷录
 		var loginName = localStorage.getItem('loginName');
 		
 		if (loginName != null && loginName != '') {
 			$('loginName').val(loginName);
 		}
 		
-		var empPhoto = localStorage.getItem('empPhoto');
-		
-		if (empPhoto != null && empPhoto != '') {
-			$('#header-border').css('background','url(' + empPhoto + ')');
-		}
 		
 		var codeText;
 		
 		$('#loginBtn').click(function(){
-			
+	
+						
 			$.ajax({
 				type:"get",
 				url:baseUrl + '/auth',
@@ -140,60 +132,99 @@ function hideURLbar(){ window.scrollTo(0,1); } </script>
 			var code = $('#code').val();
 			if( code.toLowerCase() != codeText.toLowerCase() ){
 				
-				layer.msg('');
+				layer.msg('验证码输入错误，请重新输入');
 				$("#yzm_img").prop('src', baseUrl+'/getVerifiCode?a='+new Date().getTime());
 				$('#code').val('');
 				$('#code').focus();
 				
 				return;
 			}
-
-			var url = baseUrl + '/employee/login';
 			
 			var params = {
-				empLoginName:$('#empLoginName').val(),
-				empPwd:$('#empPwd').val()
+				loginName:$('#loginName').val(),
+				pwd:$('#password').val()
+			}		
+			var loginType = $('#loginType').val();
+			if(loginType=='shop'){
+				alert('shop');
+			}else if(loginType=='customer'){
+				alert('customer');
+			}else if(loginType=='manager'){
+				var url = baseUrl + '/manager/login';
+				console.log(params);
+				$.post(url,params,function(data) {
+				
+					if (data == 1) {
+						layer.msg('登录账号不存在！请重新输入');
+						$("#yzm_img").prop('src', baseUrl+'/getVerifiCode?a='+new Date().getTime());
+					} else if (data == 2) {
+						layer.msg('登录密码错误！请重新输入');
+						$("#yzm_img").prop('src', baseUrl+'/getVerifiCode?a='+new Date().getTime());
+					} else {					
+						
+						layer.msg('登陆成功！');
+						
+						setTimeout(function(){
+							location.href = 'manager/queryManager.html';
+						},500);
+					}										
+					
+				})
+				.error(function(){					
+					layer.msg('账号验证错误！请重新输入');		
+					$("#yzm_img").prop('src', baseUrl+'/getVerifiCode?a='+new Date().getTime());
+				});
+				
+			}else{
+				alert('请选择登陆类型');
+				$("#yzm_img").prop('src', baseUrl+'/getVerifiCode?a='+new Date().getTime());
+				return;
 			}
-									
-			$.post(url,params,function(data) {
-				
-				if (data == 1) {
-					layer.msg('');
-				} else if (data == 2) {
-					layer.msg('');
-				} else {
-					
-					//
-					localStorage.setItem('empLoginName',$('#empLoginName').val());
-					
-					//
-					$.get(baseUrl + '/employee/queryHead',function(data){
-						
-						if (data != null && data != '') {
-							localStorage.setItem('empPhoto',data);
-						} else {
-							localStorage.removeItem('empPhoto');
-						}
-						
-					})
-					.error(function(){
-						layer.msg('');
-					});						
-					
-					layer.msg('');
-					
-					setTimeout(function(){
-						location.href = 'mainTest.html';
-					},500);
-				}										
-				
-			})
-			.error(function(){					
-				layer.msg('');					
-			});
 			
+//			var url = baseUrl + '/employee/login';
+//			
+//			
+//									
+//			$.post(url,params,function(data) {
+//				
+//				if (data == 1) {
+//					layer.msg('');
+//				} else if (data == 2) {
+//					layer.msg('');
+//				} else {
+//					
+//					//
+//					localStorage.setItem('empLoginName',$('#empLoginName').val());
+//					
+//					//
+//					$.get(baseUrl + '/employee/queryHead',function(data){
+//						
+//						if (data != null && data != '') {
+//							localStorage.setItem('empPhoto',data);
+//						} else {
+//							localStorage.removeItem('empPhoto');
+//						}
+//						
+//					})
+//					.error(function(){
+//						layer.msg('');
+//					});						
+//					
+//					layer.msg('');
+//					
+//					setTimeout(function(){
+//						location.href = 'mainTest.html';
+//					},500);
+//				}										
+//				
+//			})
+//			.error(function(){					
+//				layer.msg('登陆失败！请重新输入');	
+//				$("#yzm_img").prop('src', baseUrl+'/getVerifiCode?a='+new Date().getTime());
+//			});
+//			
 			
-		});
+		})
 		
 		
 		function getVerifiCode() {

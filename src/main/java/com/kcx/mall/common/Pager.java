@@ -1,4 +1,4 @@
-package com.kcx.mall.commom;
+package com.kcx.mall.common;
 
 /**
  * 共通的分页功能

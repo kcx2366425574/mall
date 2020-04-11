@@ -20,6 +20,9 @@ public class Manager {
     
     //管理员头像
     private String manaPhoto;
+    
+    //管理员说明
+    private String manaInfo;
 
     //-----------------------getters and setters
     public Integer getManaId() {
@@ -54,7 +57,17 @@ public class Manager {
         this.manaIson = manaIson;
     }
     
-    public String getManaPhoto() {
+    
+    
+    public String getManaInfo() {
+		return manaInfo;
+	}
+
+	public void setManaInfo(String manaInfo) {
+		this.manaInfo = manaInfo;
+	}
+
+	public String getManaPhoto() {
 		return manaPhoto;
 	}
 
@@ -70,43 +83,47 @@ public class Manager {
 	}
 
     
-	public Manager(String manaName, String manaPassword, Boolean manaIson) {
+	public Manager(String manaName, String manaPassword, Boolean manaIson,String manaInfo) {
 		super();
 		this.manaName = manaName;
 		this.manaPassword = manaPassword;
 		this.manaIson = manaIson;
+		this.manaInfo = manaInfo;
 	}
 	
 
-	public Manager(String manaName, String manaPassword, Boolean manaIson, String manaPhoto) {
+	public Manager(String manaName, String manaPassword, Boolean manaIson, String manaPhoto,String manaInfo) {
 		super();
 		this.manaName = manaName;
 		this.manaPassword = manaPassword;
 		this.manaIson = manaIson;
 		this.manaPhoto = manaPhoto;
+		this.manaInfo = manaInfo;
 	}
 
-	public Manager(Integer manaId, String manaName, String manaPassword, Boolean manaIson, String manaPhoto) {
+	public Manager(Integer manaId, String manaName, String manaPassword, Boolean manaIson, String manaPhoto,String manaInfo) {
 		super();
 		this.manaId = manaId;
 		this.manaName = manaName;
 		this.manaPassword = manaPassword;
 		this.manaIson = manaIson;
 		this.manaPhoto = manaPhoto;
+		this.manaInfo = manaInfo;
 	}
 
-	public Manager(Integer manaId, String manaName, String manaPassword, Boolean manaIson) {
+	public Manager(Integer manaId, String manaName, String manaPassword, Boolean manaIson, String manaInfo) {
 		super();
 		this.manaId = manaId;
 		this.manaName = manaName;
 		this.manaPassword = manaPassword;
 		this.manaIson = manaIson;
+		this.manaInfo = manaInfo;
 	}
 
 	@Override
 	public String toString() {
 		return "Manager [manaId=" + manaId + ", manaName=" + manaName + ", manaPassword=" + manaPassword + ", manaIson="
-				+ manaIson + "]";
+				+ manaIson + ", manaPhoto=" + manaPhoto + ", manaInfo=" + manaInfo + "]";
 	}
     
     

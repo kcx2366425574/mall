@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.kcx.mall.common.Pager;
 import com.kcx.mall.manager.dao.ManagerMapper;
 import com.kcx.mall.manager.pojo.Manager;
 
@@ -25,7 +27,6 @@ public class ManagerService {
 	 * 登录验证
 	 * 返回1 用户名不存在 2 密码错误 3 登录成功 4账号已在别处登录
 	 */
-	@Transactional(readOnly=true)
 	public int checkLogin(String manaName,String manaPassword) {
 		
 		Manager mana = mapper.queryByLoginName(manaName);
@@ -77,13 +78,19 @@ public class ManagerService {
 	
 	//查询所有管理员
 	@Transactional(readOnly=true)
-	public List<Manager> queryAll(){
-		return mapper.queryAll();
+	public List<Manager> queryAll(Pager pager){
+		return mapper.queryAll(pager.getStart(),pager.getPageSize());
 	}
 	
 	//根据登录名查询管理员
 	@Transactional(readOnly=true)
 	public Manager queryByLoginName(String manaName) {
 		return mapper.queryByLoginName(manaName);
+	}
+	
+	//得到manager总数
+	@Transactional(readOnly=true)
+	public int getAllAcount() {
+		return mapper.getAllAcount();
 	}
 }

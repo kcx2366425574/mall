@@ -6,17 +6,19 @@
     <result column="mana_name" property="manaName" jdbcType="VARCHAR" />
     <result column="mana_password" property="manaPassword" jdbcType="VARCHAR" />
     <result column="mana_ison" property="manaIson" jdbcType="BIT" />
+    <result column="mana_info" property="manaInfo" jdbcType="VARCHAR" />
   </resultMap>
   
   
   <insert id="addMana" parameterType="com.kcx.mall.manager.pojo.Manager">
 		insert into manager (mana_id,
 		mana_name, mana_password,
-		mana_ison)
+		mana_ison,mana_info)
 		values (default,
 		#{manaName,jdbcType=VARCHAR},
 		#{manaPassword,jdbcType=VARCHAR},
-		#{manaIson,jdbcType=TINYINT})
+		#{manaIson,jdbcType=TINYINT},
+		#{manaInfo,jdbcType=VARCHAR})
 	</insert>
 	
 	<delete id="deleteByManaId" parameterType="java.lang.Integer">
@@ -36,7 +38,8 @@
 	<update id="update" parameterType="com.kcx.mall.manager.pojo.Manager">
 		update manager set 
 		mana_name = #{manaName,jdbcType=VARCHAR},
-		mana_password  = #{manaPassword,jdbcType=VARCHAR}
+		mana_password  = #{manaPassword,jdbcType=VARCHAR},
+		mana_info  = #{manaInfo,jdbcType=VARCHAR}
 		where mana_id = #{manaId,jdbcType=INTEGER}
 	</update>
 	
@@ -61,5 +64,11 @@
   <select id="queryAll" resultMap="BaseResultMap">
     select *
     from manager
+    LIMIT #{start}, #{pageSize}
+  </select>
+  
+  <select id="getAllAcount" resultType="java.lang.Integer" >
+	    select count(*)
+	    from manager
   </select>
 </mapper>
