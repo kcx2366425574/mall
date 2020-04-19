@@ -37,6 +37,12 @@ public interface ManagerMapper {
 	//得到manager总数
 	int getAllAcount();
 	
+	//通过id获得头像
+	String getHeadById(int manaId);
+	
 	//上传头像
-	void updateHead(@Param("manaName")String manaName,@Param("manaPhoto")String manaPhoto);
+	void updateHead(@Param("manaId")int manaId,@Param("manaPhoto")String manaPhoto);
+	
+	//修改密码
+	void updatePwd(@Param("manaId")int manaId,@Param("manaPassword")String manaPassword);
 }

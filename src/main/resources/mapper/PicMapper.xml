@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kcx.mall.pic.dao.PicMapper" >
+  <resultMap id="BaseResultMap" type="com.kcx.mall.pic.pojo.Pic" >
+    <id column="pic_id" property="picId" jdbcType="INTEGER" />    
+    
+    <!-- 产品映射 -->
+	<association property="picPro" javaType="com.kcx.mall.product.pojo.Product">
+		<id column="pro_id" property="proId" jdbcType="INTEGER" />
+		<result column="pro_name" property="proName" jdbcType="VARCHAR" />
+		<result column="pro_price" property="proPrice" jdbcType="FLOAT" />
+		<result column="pro_info" property="proInfo" jdbcType="VARCHAR" />
+	</association>
+  </resultMap>
+  
+  <resultMap id="ResultMapWithBLOBs" type="com.kcx.mall.pic.pojo.Pic" extends="BaseResultMap" >
+    <result column="pic_info" property="picInfo" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  
+  <insert id="addPic" parameterType="com.kcx.mall.pic.pojo.Pic">
+		insert into pic (pic_id,
+		pic_pro_id, pic_info)
+		values (default,
+		#{picPro.proId,jdbcType=INTEGER},
+		#{picInfo,jdbcType=LONGVARCHAR})
+	</insert>
+	
+	<select id="queryByProId" resultMap="BaseResultMap" >
+    select *
+    from pic
+    where pic_pro_id = #{picPro.proId,jdbcType=INTEGER}
+  </select>
+  
+  <delete id="deleteById" parameterType="java.lang.Integer">
+		delete from pic where pic_id = #{picId,jdbcType=INTEGER}
+	</delete>
+	
+	<delete id="deleteMany" parameterType="Integer[]">
+		delete from pic where pic_id in
+		<foreach collection="array" index="i" item="picId" open="("
+			close=")" separator=",">
+			#{picId}
+		</foreach>
+	</delete>
+  
+</mapper>

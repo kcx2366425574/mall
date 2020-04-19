@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<!--设置浏览器的布局视口，只在移动端浏览器起作用-->
+		<meta name="viewport" content="width=width-device,initial-scale=1,user-scalable=no" />
+		<meta charset="UTF-8">
+		<title>增加商品类型</title>
+		<link rel="stylesheet" href="../js/bootstrap/css/bootstrap.css" />
+	</head>
+	<body>
+		
+		<div class="container">
+			
+			<h3 class="page-header">
+				增加商品类型
+			</h3>
+			
+			<form class="form-horizontal col-md-10" id="form1">
+				<div class="form-group">
+					<label for="" class="col-md-2">商品类型名称</label>
+					<div class="col-md-10">
+						<input type="text" id="ptName" name="ptName" placeholder="请输入商品类型名称" class="form-control"/>
+					</div>					
+				</div>
+				
+				
+				<div class="form-group">
+					<label for="" class="col-md-2">商品类型描述</label>
+					<div class="col-md-10">
+						<input type="text" id="ptInfo" name="ptInfo" placeholder="请输入商品类型描述" class="form-control"/>
+					</div>					
+				</div>
+				
+				<div class="form-group">
+					<div class="col-md-6">						
+						<input type="button" value="返回" class="btn btn-warning btn-block" onclick="history.back();"/>
+					</div>
+					<div class="col-md-6">						
+						<input type="button" value="增加" class="btn btn-primary btn-block" id="addBtn"/>
+					</div>				
+				</div>
+			</form>			
+		</div>
+		
+		
+		<script type="text/javascript" src="../js/jquery.js" ></script>
+		<script type="text/javascript" src="../js/global.js" ></script>
+		<script type="text/javascript" src="../js/bootstrap/js/bootstrap.js" ></script>
+		<script type="text/javascript" src="../js/layer/layer.js" ></script>
+		<script type="text/javascript" src="../js/vue/vue2.5.js" ></script>
+		
+		<script>
+			
+			
+			
+			//单击增加按钮
+			$('#addBtn').click(function(){
+				
+				//加载层
+				layer.load(2);
+				
+				//设置参数
+				var params = {
+					ptName:$('#ptName').val(),
+					ptInfo:$('#ptInfo').val()
+				}
+				
+				console.log(params);
+				
+				//发出ajax请求调用后端接口
+				$.ajax({
+					type:"post", //请求类型get post
+					url: baseUrl + "/proType/add", //请求url地址
+					async:true, //true默认表示异步请求
+					dataType:'text', //响应的数据类型
+					data:params   //请求参数数据
+				})
+				.done(function(data,status,xhr){ //请求成功回调函数
+					layer.closeAll();//关闭加载
+					layer.msg('增加商品类型成功');	
+					
+					setTimeout(function(){
+						location.href = 'queryProType.html';//重定向到查询画面
+					},1000);
+				})
+				.fail(function(xhr,errorStatus,errorText){ //请求失败回调函数
+					alert(errorStatus + ',' + errorText);
+					layer.closeAll();//关闭加载
+				});				
+				
+			});			
+		</script>
+	
+		
+	</body>
+</html>

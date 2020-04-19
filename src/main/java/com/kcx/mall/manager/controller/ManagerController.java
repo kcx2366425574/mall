@@ -14,6 +14,7 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.server.Session;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -44,8 +45,6 @@ public class ManagerController {
 	@RequestMapping("/manager/login")
 	@ResponseBody
 	public Integer login(HttpServletRequest request, HttpServletResponse response, String loginName, String pwd) {
-
-		System.out.println("管理员在登陆");
 		// 密码加密
 		pwd = new Sha256Hash(pwd, "我有一只小花猫", 10).toBase64();
 
@@ -73,7 +72,6 @@ public class ManagerController {
 		session.setAttribute("loginName", loginName); // 记录管理员登录名
 		session.setAttribute("loginType", "manager");
 		session.setAttribute("manaId", mana.getManaId()); // 记录管理员id
-		System.out.println("这是session中的"+loginName+"还有id:"+mana.getManaId());
 		return 3;
 	}
 	
@@ -81,6 +79,7 @@ public class ManagerController {
 	@RequestMapping("/manager/add")
 	public void addManager(HttpServletRequest request, HttpServletResponse response, Manager mana) {
 		// 密码加密
+		mana.setManaIson(false);
 		String manaPassword = new Sha256Hash(mana.getManaPassword(), "我有一只小花猫", 10).toBase64();
 		mana.setManaPassword(manaPassword);
 		service.insertManager(mana);
@@ -100,8 +99,10 @@ public class ManagerController {
 	
 	// 修改管理员信息
 	@RequestMapping("/manager/update")
-	public void updateMana(HttpServletRequest request, HttpServletResponse response, Manager mana) {
-		service.updateManager(mana);
+	public void updateMana(HttpServletRequest request, HttpServletResponse response, int manaId,String manaInfo) {
+		Manager manager = service.queryById(manaId);
+		manager.setManaInfo(manaInfo);
+		service.updateManager(manager);
 	}
 	
 	// 根据id查询
@@ -114,8 +115,18 @@ public class ManagerController {
 	//根据登录名查询
 	@RequestMapping("/manager/queryByName")
 	@ResponseBody
-	public Manager queryByLoginName(String manaName) {
+	public Manager queryByLoginName(HttpServletRequest request, HttpServletResponse response,String manaName) {
 		return service.queryByLoginName(manaName);
+	}
+	
+	//检测登录名
+	@RequestMapping("/manager/checkLoginName")
+	@ResponseBody
+	public Boolean checkLoginName(HttpServletRequest request, HttpServletResponse response,String loginName) {
+		Manager manager = service.queryByLoginName(loginName);
+		if (manager == null)
+			return true;
+		return false;
 	}
 	
 	//得到所有管理员,提供分页功能
@@ -134,8 +145,50 @@ public class ManagerController {
 		// 在Map集合中存储分页数据和名片数据
 		HashMap<String, Object> map = new HashMap<>();
 		map.put("pager", pager);
-		map.put("list", list);
-
+		map.put("list", list);		
 		return map;
+	}
+	
+	
+	//获取头像
+	@RequestMapping("/manager/getHead")
+	@ResponseBody
+	public String getHead(HttpServletRequest request, HttpServletResponse response) {
+		HttpSession session = request.getSession();
+		int manaId = (int) session.getAttribute("manaId");
+		return service.getHead(manaId);
+	}
+	
+	//更新头像
+	@RequestMapping("/manager/updateHead")
+	@ResponseBody
+	public void updateHead(HttpServletRequest request, HttpServletResponse response,String manaPhoto) {
+		HttpSession session = request.getSession();
+		int manaId = (int) session.getAttribute("manaId");
+		service.updateHead(manaId, manaPhoto);
+	}
+	
+	//获取头像
+	@RequestMapping("/manager/updatePwd")
+	@ResponseBody
+	public boolean updatePwd(HttpServletRequest request, HttpServletResponse response,String newManaPwd,String oldManaPwd) {
+		String manaPwd = new Sha256Hash(oldManaPwd, "我有一只小花猫", 10).toBase64();
+		HttpSession session = request.getSession();
+		int manaId = (int) session.getAttribute("manaId");
+		Manager mana = service.queryById(manaId);
+		if(!mana.getManaPassword().equals(manaPwd)) {
+			return false;
+		}
+		String newPwd = new Sha256Hash(newManaPwd, "我有一只小花猫", 10).toBase64();
+		service.updatePwd(manaId, newPwd);
+		return true;
+	}
+	
+	//获取id
+	@RequestMapping("/manager/getName")
+	@ResponseBody
+	public String getName(HttpServletRequest request, HttpServletResponse response) {
+		HttpSession session = request.getSession();
+		return (String) session.getAttribute("loginName");
 	}
 }

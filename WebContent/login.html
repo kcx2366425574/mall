@@ -160,7 +160,10 @@ function hideURLbar(){ window.scrollTo(0,1); } </script>
 					} else if (data == 2) {
 						layer.msg('登录密码错误！请重新输入');
 						$("#yzm_img").prop('src', baseUrl+'/getVerifiCode?a='+new Date().getTime());
-					} else {					
+					} else if(data == 4){
+						layer.msg('账号已在别处登录，请联系超级管理员查看详情!');
+						$("#yzm_img").prop('src', baseUrl+'/getVerifiCode?a='+new Date().getTime());
+					}else {
 						
 						layer.msg('登陆成功！');
 						

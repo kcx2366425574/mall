@@ -76,6 +76,12 @@ public class ManagerService {
 		return mapper.queryById(manaId);
 	}
 	
+	//获取管理员头像
+	@Transactional(readOnly=true)
+	public String getHead(int manaId) {
+		return mapper.getHeadById(manaId);
+	}
+	
 	//查询所有管理员
 	@Transactional(readOnly=true)
 	public List<Manager> queryAll(Pager pager){
@@ -92,5 +98,15 @@ public class ManagerService {
 	@Transactional(readOnly=true)
 	public int getAllAcount() {
 		return mapper.getAllAcount();
+	}
+	
+	//更新头像
+	public void updateHead(int manaId,String manaPhoto) {
+		mapper.updateHead(manaId, manaPhoto);
+	}
+	
+	//更新密码
+	public void updatePwd(int manaId,String manaPassword) {
+		mapper.updatePwd(manaId, manaPassword);
 	}
 }

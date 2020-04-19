@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<!--设置浏览器的布局视口，只在移动端浏览器起作用-->
+		<meta name="viewport" content="width=width-device,initial-scale=1,user-scalable=no" />
+		<meta charset="UTF-8">
+		<title>增加管理员</title>
+		<link rel="stylesheet" href="../js/bootstrap/css/bootstrap.css" />
+	</head>
+	<body>
+		
+		<div class="container">
+			
+			<h3 class="page-header">
+				增加新管理员
+			</h3>
+			
+			<form class="form-horizontal col-md-10" id="form1">
+				<div class="form-group">
+					<label for="" class="col-md-2">管理员名称</label>
+					<div class="col-md-10">
+						<input type="text" id="loginName" name="loginName" placeholder="请输入管理员名称" class="form-control"/>
+					</div>					
+				</div>
+				
+				<div class="form-group">
+					<label for="" class="col-md-2">登录密码</label>
+					<div class="col-md-10">
+						<input type="password" id="manaPassword" name="manaPassword" placeholder="请输入登录密码" class="form-control"/>
+					</div>					
+				</div>
+				
+				<div class="form-group">
+					<label for="" class="col-md-2">确认密码</label>
+					<div class="col-md-10">
+						<input type="password" id="manaPasswordConfirm" name="manaPasswordConfirm" placeholder="请确认密码" class="form-control"/>
+					</div>					
+				</div>
+				
+				
+				<div class="form-group">
+					<label for="" class="col-md-2">管理员描述</label>
+					<div class="col-md-10">
+						<input type="text" id="manaInfo" name="manaInfo" placeholder="请输入管理员功能描述" class="form-control"/>
+					</div>					
+				</div>
+				
+				<div class="form-group">
+					<div class="col-md-offset-4 col-md-4">						
+						<input type="button" value="返回" class="btn btn-warning btn-block" onclick="history.back();"/>
+					</div>
+					<div class="col-md-4">						
+						<input type="button" value="增加" class="btn btn-primary btn-block" id="addBtn"/>
+					</div>				
+				</div>
+			</form>			
+		</div>
+		
+		
+		<script type="text/javascript" src="../js/jquery.js" ></script>
+		<script type="text/javascript" src="../js/global.js" ></script>
+		<script type="text/javascript" src="../js/bootstrap/js/bootstrap.js" ></script>
+		<script type="text/javascript" src="../js/layer/layer.js" ></script>
+		<script type="text/javascript" src="../js/vue/vue2.5.js" ></script>
+		
+		<script>
+			
+			//验证登录名是否唯一,鼠标移开开始发送请求֤
+			$('#loginName').blur(function(){
+				
+				layer.msg('正在验证该登录密码是否可用', {icon: 16});
+				
+				//设置url
+				var url = baseUrl + '/manager/checkLoginName';
+				
+				
+				
+				//发送ajax请求
+				$.ajax({
+					type:"post",
+					url:url,
+					async:true,
+					dataType:'text',
+					data:{
+							loginName:$('#loginName').val()
+						}
+				})
+				.done(function(data,status,xhr){
+					layer.closeAll();
+					if ($('#loginName').val() !='' && data == 'true')
+						layer.msg('该登录名可以使用');
+					else {
+						layer.msg('该登录名已经被注册使用，请重新输入登录名');
+						$('#loginName').focus();
+					}
+					
+				})
+				.fail(function(xhr,errorStatus,errorText){
+					alert(errorStatus + ',' + errorText);
+					layer.closeAll();
+				});					
+				
+			});
+			
+			
+			//单击增加按钮
+			$('#addBtn').click(function(){
+				
+				//表单验证函数
+				function checkForm() {
+					
+					//验证密码
+					var manaPassword = $('#manaPassword');			 			 				 				 	
+				
+					//验证密码
+					var manaPasswordConfirm = $('#manaPasswordConfirm');
+					
+					if(manaPassword.val()!=manaPasswordConfirm.val()){
+						layer.msg('两次输入的密码不一致，请重新输入');
+						manaPassword.focus();
+						return false;
+					}
+					
+//					r = /^[a-zA-Z0-9]{6,8}$/;
+//					
+//					if (!r.test(manaPassword)) {
+//						layer.msg('密码必须是字母数字，6-8位');
+//						manaPassword.focus();
+//						return false;
+//					}		
+					return true;					
+				}				
+				
+//				调用表单验证
+				if ( !checkForm() )
+					return;	
+				
+				//加载层
+				layer.load(2);
+				
+				//设置参数
+				var params = {
+					manaName:$('#loginName').val(),
+					manaPassword:$('#manaPassword').val(),
+					manaInfo:$('#manaInfo').val()
+				}
+				
+				console.log(params);
+				
+				//发出ajax请求调用后端接口
+				$.ajax({
+					type:"post", //请求类型get post
+					url: baseUrl + "/manager/add", //请求url地址
+					async:true, //true默认表示异步请求
+					dataType:'text', //响应的数据类型
+					data:params   //请求参数数据
+				})
+				.done(function(data,status,xhr){ //请求成功回调函数
+					layer.closeAll();//关闭加载
+					layer.msg('增加管理员成功');	
+					
+					setTimeout(function(){
+						location.href = 'queryManager.html';//重定向到查询画面
+					},1000);
+				})
+				.fail(function(xhr,errorStatus,errorText){ //请求失败回调函数
+					alert(errorStatus + ',' + errorText);
+					layer.closeAll();//关闭加载
+				});				
+				
+			});			
+		</script>
+	
+		
+	</body>
+</html>

@@ -26,7 +26,7 @@ public interface ProductMapper {
 	void updateProduct(Product product);
 	
 	//批量审核通过
-	void updateMany(int[] ids);
+	void updateMany(int[] ids,int proManaId);
 	
 	//查询
 	Product queryById(int proId);
@@ -36,6 +36,6 @@ public interface ProductMapper {
 			@Param("proShopId") int proShopId,@Param("proPtId") int proPtId);
 	
 	//得到动态查询总数
-	int getCountByCondition(@Param("start") int start, @Param("pageSize") int pageSize,@Param("proCusId") int proCusId,
+	int getCountByCondition(@Param("proCusId") int proCusId,
 			@Param("proShopId") int proShopId,@Param("proPtId") int proPtId);
 }

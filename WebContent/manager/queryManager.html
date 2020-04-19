@@ -6,6 +6,7 @@
 		<meta charset="UTF-8">
 		<title>管理员列表</title>
 		<link rel="stylesheet" href="../js/bootstrap/css/bootstrap.css" />
+		<link rel="stylesheet" href="../js/layui/css/layui.css" />
 		<style>
 			.pagination {
 				margin-top: 0!important;
@@ -13,6 +14,24 @@
 		</style>
 	</head>
 	<body>
+		
+		
+		<ul class="layui-nav">
+		  <li class="layui-nav-item">
+		    <a href="">系统管理<span class="layui-badge">9</span></a>
+		  </li>
+		  <li class="layui-nav-item">
+		    <a href="">个人中心<span class="layui-badge-dot"></span></a>
+		  </li>
+		  <li class="layui-nav-item">
+		    <a id="name" href=""><img id="head" class="layui-nav-img">{{loginName}}</a>
+		    <dl class="layui-nav-child">
+		      <dd><a href="updateManaPwd.html">修改密码</a></dd>
+		      <dd><a href="updateManaHead.html">更新头像</a></dd>
+		      <dd><a href="../logout.jsp">退出登录</a></dd>
+		    </dl>
+		  </li>
+		</ul>
 		
 		<div class="container">
 			
@@ -43,15 +62,21 @@
 			<table class="table table-striped table-bordered table-hover table-condensed">
 				<thead>
 					<tr>
+						<th>选择</th>
 						<th>管理员编号</th>
 						<th>管理员名称</th>
+						<th>管理员详细信息</th>
 						<th>操作</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr v-for="(manager, index) in managerData">
+						<td>
+							<input type="checkbox" id="ids" name="ids" :value="manager.manaId" />
+						</td>
 						<td>{{manager.manaId}}</td>
 						<td>{{manager.manaName}}</td>
+						<td>{{manager.manaInfo}}</td>
 						<td>
 							<div class="dropdown">				
 								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -59,7 +84,7 @@
 									<span class="caret"></span>
 								</button>				
 								<ul class="dropdown-menu">
-									<li><a href="javascript:void(0);" @click="showDetails(manager.manaId);">修改/详细</a></li>
+									<li><a href="javascript:void(0);" @click="showDetails(manager.manaId);">修改</a></li>
 									<li><a href="javascript:void(0);" @click="del(manager.manaId,index);">删除</a></li>
 									
 								</ul>	
@@ -93,8 +118,12 @@
 			</div>
 			
 			<div class="row">
-				<div class="col-md-offset-8 col-md-4">
-					<a href="Addmanager.html" class="btn btn-primary btn-block">增加管理员</a>
+				<div class="col-md-4">
+					<a href="addManager.html" class="btn btn-primary btn-block">增加管理员</a>
+				</div>
+				
+				<div class="col-md-4 col-md-offset-4">
+					<input type="button" disabled value="批量删除" id="delManyBtn" class="btn btn-danger  btn-block"/>
 				</div>
 			</div>
 			
@@ -106,9 +135,42 @@
 		<script type="text/javascript" src="../js/bootstrap/js/bootstrap.js" ></script>
 		<script type="text/javascript" src="../js/layer/layer.js"></script>
 		<script type="text/javascript" src="../js/vue/vue2.5.js" ></script>
+		<script src="../js/layui/layui.all.js"></script>
 		
 		<script>
 			
+			var manaId = localStorage.getItem("manaId");
+			
+			
+			var vName = new Vue({
+				el:'#name',
+				data:{
+					loginName:''
+				},
+				methods:{
+					ini:function() {  //初始化
+																
+												
+						//发出ajax请求调用后端接口
+						var url = baseUrl + "/manager/getName";
+						
+						$.ajax({
+							type:"get", //请求类型get post
+							url: url, //请求url地址
+							async:true, //true默认表示异步请求
+							dataType:'text', //响应的数据类型	
+						})
+						.done(function(data,status,xhr){ //请求成功回调函数
+							vName.loginName = data;
+						})
+						.fail(function(xhr,errorStatus,errorText){ //请求失败回调函数
+							alert(errorStatus + ',' + errorText);				
+						});
+					}
+				}
+			});
+				
+			vName.ini();
 			
 			var v = new Vue({
 				el:'.container', //应用vue数据的范围
@@ -168,19 +230,17 @@
 							alert(errorStatus + ',' + errorText);				
 						});							
 					},
-					
 					showDetails:function(manaId) { //修改查看详细的方法
 						
 						// 利用iframe加载其他网页内容到页面层 type:2
 						layer.open({
 							title:'管理员详细信息',
 						    type: 2, 				   
-						    area: ['600px', '800px'], //宽高
-						    content: 'Updatemanager.html?manaId=' + manaId
+						    area: ['600px', '400px'], //宽高
+						    content: 'updateManager.html?manaId=' + manaId + '&pageNum=' + v.pager.pageNum
 						});
 						
 					},
-					
 					del:function(manaId,index) {  //删除
 												
 						var flag = window.confirm('确定要删除此管理员吗');
@@ -196,7 +256,7 @@
 							url: url, //请求url地址
 							async:true, //true默认表示异步请求
 							dataType:'text', //响应的数据类型	
-							data:{ids:manaId}	
+							data:{manaId:manaId}	
 						})
 						.done(function(data,status,xhr){ //请求成功回调函数
 							layer.msg('删除管理员成功');	
@@ -214,7 +274,79 @@
 //			调用查询方法
 			v.query(1);	
 			
+							
+		 	$.ajax({
+				type: "get", //请求类型get post
+				url: baseUrl+'/manager/getHead', //请求url地址
+				async: true, //true默认表示异步请求
+				dataType: 'text', //响应的数据类型	
+			})
+			.done(function(data, status, xhr) { //请求成功回调函数
+				$('#head').attr('src',data);
+			})
+			.fail(function(xhr, errorStatus, errorText) { //请求失败回调函数
+				alert(errorStatus + ',' + errorText);
+			});
+			  			
+			//批量删除1
+			$('#delManyBtn').click(function(){
+				
+				var ids = $(':checkbox[name=ids]:checked');
+				
+				if (ids.length == 0) {
+					alert('没有选择任何管理员');
+					return;
+				}
+				
+				var idsStr = '';
+				
+				for (var i = 0;i < ids.length;i ++) {
+					idsStr += ids.eq(i).val() + ',';
+				}
+				
+				idsStr = idsStr.substr(0,idsStr.length-1);
+				
+				var flag = window.confirm('确定要删除选中的管理员吗');
+						
+				if ( !flag )
+					return;
+					
+				//发出ajax请求
+				var url = baseUrl + "/manager/deleteMany";
+				
+				$.ajax({
+					type: "get", //请求类型get post
+					url: url, //请求url地址
+					async: true, //true默认表示异步请求
+					dataType: 'text', //响应的数据类型	
+					data: {
+						ids: idsStr
+					}
+				})
+				.done(function(data, status, xhr) { //请求成功回调函数
+					layer.msg('删除管理员成功');
+					setTimeout(function() {
+						window.v.query(v.pager.pageNum);
+					}, 1000);
+				})
+				.fail(function(xhr, errorStatus, errorText) { //请求失败回调函数
+					alert(errorStatus + ',' + errorText);
+				});
+				
+			});	
 			
+			//删除按钮的状态						
+			$('.container').on('click',':checkbox[name=ids]',function(){
+				
+				var ids = $(':checkbox[name=ids]:checked');
+												
+				if (ids.length == 0)
+					$('#delManyBtn').prop('disabled',true);
+				else
+					$('#delManyBtn').prop('disabled',false);
+
+				
+			});
 		</script>	
 		
 	</body>

@@ -46,7 +46,14 @@
 	<update id="updateHead">
 		update manager set 
 		mana_photo  = #{manaPhoto,jdbcType=LONGVARCHAR}
-		where mana_name = #{manaName,jdbcType=VARCHAR}
+		where mana_id = #{manaId,jdbcType=INTEGER}
+	</update>
+	
+	
+	<update id="updatePwd">
+		update manager set 
+		mana_password  = #{manaPassword,jdbcType=VARCHAR}
+		where mana_id = #{manaId,jdbcType=INTEGER}
 	</update>
 	
 	<select id="queryById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
@@ -71,4 +78,9 @@
 	    select count(*)
 	    from manager
   </select>
+  
+  <!-- 获取管理员头像 -->
+	<select id="getHeadById" parameterType="java.lang.Integer" resultType="java.lang.String">
+		select mana_photo from manager where mana_id=#{manaId}
+	</select>
 </mapper>

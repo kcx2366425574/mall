@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <link rel="stylesheet" type="text/css" href="js/res/static/css/main.css">
+  <link rel="stylesheet" type="text/css" href="js/res/layui/css/layui.css">
+  <script type="text/javascript" src="js/res/layui/layui.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+</head>
+<body>
+
+  <div class="header">
+    <div class="headerLayout w1200">
+      <div class="headerCon">
+        <h1 class="mallLogo" id="initInfo">
+          二手交易
+        </h1>
+        <div class="mallSearch">
+          <form action="" class="layui-form" novalidate>
+            <input type="text" name="title" required  lay-verify="required" autocomplete="off" class="layui-input" placeholder="请输入需要的商品">
+            <button class="layui-btn" lay-submit lay-filter="formDemo">
+                <i class="layui-icon layui-icon-search"></i>
+            </button>
+            <input type="hidden" name="" value="">
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="content content-nav-base commodity-content">
+ 
+    <div class="commod-cont-wrap">
+      <div class="commod-cont w1200 layui-clear">
+        <div class="left-nav">
+          <div class="title">所有分类</div>
+          <div class="list-box">
+            <dl>
+             <dt>女人</dt>
+             <dd><a href="javascript:;">上衣</a></dd>
+             <dd><a href="javascript:;">下装</a></dd>
+             <dd><a href="javascript:;">鞋靴</a></dd>
+            </dl>
+            <dl>
+             <dt>男人</dt>
+             <dd><a href="javascript:;">上衣</a></dd>
+             <dd><a href="javascript:;">下装</a></dd>
+             <dd><a href="javascript:;">男靴</a></dd>
+             <dd><a href="javascript:;">配饰</a></dd>
+            </dl>
+            <dl>
+             <dt>数码</dt>
+             <dd><a href="javascript:;">电脑</a></dd>
+             <dd><a href="javascript:;">手机</a></dd>
+             <dd><a href="javascript:;">耳机</a></dd>
+            </dl>
+            <dl>
+             <dt>家居</dt>
+             <dd><a href="javascript:;">电器</a></dd>
+             <dd><a href="javascript:;">锅</a></dd>
+             <dd><a href="javascript:;">衣架</a></dd>
+            </dl>
+            <dl>
+             <dt>箱包</dt>
+             <dd><a href="javascript:;">钱包</a></dd>
+             <dd><a href="javascript:;">背包</a></dd>
+             <dd><a href="javascript:;">行李箱</a></dd>
+            </dl>
+          </div>
+        </div>
+        <div class="right-cont-wrap">
+          <div class="right-cont">
+            <div class="prod-number">
+              <span>200个</span>
+            </div>
+            <div class="cont-list layui-clear" id="list-cont">
+              <!--<div class="item">
+                <div class="img">
+                  <a href="javascript:;"><img src="../res/static/img/paging_img1.jpg"></a>
+                </div>
+                <div class="text">
+                  <p class="title">森系小清新四件套</p>
+                  <p class="price">
+                    <span class="pri">￥200</span>
+                    <span class="nub">1266付款</span>
+                  </p>
+                </div>
+              </div>-->
+              
+            </div>
+            <!-- 模版引擎导入 -->
+            <!-- <script type="text/html" id="demo">
+              {{# layui.each(d.menu.milk.content,function(index,item){}}    
+                <div class="item">
+                  <div class="img">
+                    <a href="javascript:;"><img src="{{item.img}}"></a>
+                  </div>
+                  <div class="text">
+                    <p class="title"></p>
+                    <p class="price">
+                      <span class="pri">{{item.pri}}</span>
+                      <span class="nub">{{item.nub}}</span>
+                    </p>
+                  </div>
+                </div>
+              {{# }); }}
+            </script> -->
+            <div id="demo0" style="text-align: center;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<script>
+
+  layui.config({
+    base: 'js/res/static/js/util/' //你存放新模块的目录，注意，不是layui的模块目录
+  }).use(['mm','laypage','jquery'],function(){
+      var laypage = layui.laypage,$ = layui.$,
+     mm = layui.mm;
+       laypage.render({
+        elem: 'demo0'
+        ,count: 100 //数据总数
+      });
+
+
+    $('.sort a').on('click',function(){
+      $(this).addClass('active').siblings().removeClass('active');
+    })
+    $('.list-box dt').on('click',function(){
+      if($(this).attr('off')){
+        $(this).removeClass('active').siblings('dd').show()
+        $(this).attr('off','')
+      }else{
+        $(this).addClass('active').siblings('dd').hide()
+        $(this).attr('off',true)
+      }
+    })
+
+});
+</script>
+
+
+</body>
+</html>
