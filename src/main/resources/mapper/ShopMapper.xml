@@ -61,4 +61,11 @@
     from shop
     where shop_id = #{shopId,jdbcType=INTEGER}
   </select>
+  
+  <select id="queryByName" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select *
+    from shop
+    where shop_minname = #{shopMinName,jdbcType=VARCHAR}
+  </select>
+  
 </mapper>

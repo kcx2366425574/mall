@@ -26,7 +26,6 @@ public class CustomerService {
 	 * 登录验证
 	 * 返回1 用户名不存在 2 密码错误 3 登录成功 4账号已在别处登录
 	 */
-	@Transactional(readOnly=true)
 	public int checkLogin(String cusLoginName,String cusPassword) {
 		
 		Customer cus = mapper.selectByLoginName(cusLoginName);

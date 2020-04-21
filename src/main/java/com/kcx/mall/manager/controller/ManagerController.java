@@ -14,12 +14,13 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.servlet.server.Session;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.kcx.mall.common.Pager;
+import com.kcx.mall.common.shiroHelper.CustomizedToken;
+import com.kcx.mall.common.shiroHelper.LoginType;
 import com.kcx.mall.manager.pojo.Manager;
 import com.kcx.mall.manager.service.ManagerService;
 
@@ -31,6 +32,8 @@ import com.kcx.mall.manager.service.ManagerService;
 
 @Controller
 public class ManagerController {
+	
+	private static final String MANAGER_LOGIN_TYPE = LoginType.MANAGER.toString();
 
 	@Autowired 
 	private ManagerService service;
@@ -49,7 +52,7 @@ public class ManagerController {
 		pwd = new Sha256Hash(pwd, "我有一只小花猫", 10).toBase64();
 
 		// 封装用户名和密码
-		UsernamePasswordToken upToken = new UsernamePasswordToken(loginName, pwd);
+		CustomizedToken upToken = new CustomizedToken(loginName, pwd, MANAGER_LOGIN_TYPE);
 
 		// Shiro登陆
 		Subject subject = SecurityUtils.getSubject();
@@ -71,7 +74,7 @@ public class ManagerController {
 		HttpSession session = request.getSession();
 		session.setAttribute("loginName", loginName); // 记录管理员登录名
 		session.setAttribute("loginType", "manager");
-		session.setAttribute("manaId", mana.getManaId()); // 记录管理员id
+		session.setAttribute("loginId", mana.getManaId()); // 记录管理员id
 		return 3;
 	}
 	
@@ -155,7 +158,7 @@ public class ManagerController {
 	@ResponseBody
 	public String getHead(HttpServletRequest request, HttpServletResponse response) {
 		HttpSession session = request.getSession();
-		int manaId = (int) session.getAttribute("manaId");
+		int manaId = (int) session.getAttribute("loginId");
 		return service.getHead(manaId);
 	}
 	
@@ -164,7 +167,7 @@ public class ManagerController {
 	@ResponseBody
 	public void updateHead(HttpServletRequest request, HttpServletResponse response,String manaPhoto) {
 		HttpSession session = request.getSession();
-		int manaId = (int) session.getAttribute("manaId");
+		int manaId = (int) session.getAttribute("loginId");
 		service.updateHead(manaId, manaPhoto);
 	}
 	
@@ -174,7 +177,7 @@ public class ManagerController {
 	public boolean updatePwd(HttpServletRequest request, HttpServletResponse response,String newManaPwd,String oldManaPwd) {
 		String manaPwd = new Sha256Hash(oldManaPwd, "我有一只小花猫", 10).toBase64();
 		HttpSession session = request.getSession();
-		int manaId = (int) session.getAttribute("manaId");
+		int manaId = (int) session.getAttribute("loginId");
 		Manager mana = service.queryById(manaId);
 		if(!mana.getManaPassword().equals(manaPwd)) {
 			return false;

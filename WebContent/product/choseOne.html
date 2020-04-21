@@ -29,10 +29,6 @@
 					<div class="modal-content">
 						<!--<form class="avatar-form" action="upload-logo.php" enctype="multipart/form-data" method="post">-->
 						<form class="avatar-form">
-							<div class="modal-header">
-								<button class="close" data-dismiss="modal" type="button">&times;</button>
-								<h4 class="modal-title" id="avatar-modal-label">上传图片</h4>
-							</div>
 							<div class="modal-body">
 								<div class="avatar-body">
 									<div class="avatar-upload">
@@ -125,10 +121,8 @@
 						newImg.src = dataUrl;						
 						//赋值给本地变量
 						imgBase64 = dataUrl;
-						
 						//显示预览图
 						$('#headImg').attr('src',dataUrl);
-						
 					
 					}
 				});
@@ -136,6 +130,8 @@
 			
 						
 			$('#uploadBtn').on('click',function(){
+				
+				alert(imgBase64);
 								
 				//设置父窗口的元素值
 				var val = $(window.parent.document).find('#photo').val();

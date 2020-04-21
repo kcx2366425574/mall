@@ -8,18 +8,44 @@
 	<!-- 生命周期对象 -->
 	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
 	
-	<!-- shiro的realm类 -->
+	<!-- shiro的realm类
 	<bean id="shiroRealm" class="com.kcx.mall.common.ShiroRealm"/>
-	
+	 -->
+	 
 	<!-- 配置缓存，只会查询一次当前用户的授权，然后放到缓存中，以后都是从缓存中查询当前用户的权限 -->
 	<bean id="cacheManager" class="org.apache.shiro.cache.MemoryConstrainedCacheManager" />
 	
 	<!-- 安全管理器对象 -->
 	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
-		<property name="cacheManager" ref="cacheManager" />		
-		<property name="realm" ref="shiroRealm" />
+		<property name="cacheManager" ref="cacheManager" />	
+		<property name="authenticator" ref="authenticator"></property>	
+        <!-- 可以配置多个Realm，其实会把realms属性赋值给ModularRealmAuthenticator的realms属性 -->
+        <property name="realms">
+            <list>
+                <ref bean="shopRealm" />
+                <ref bean="managerRealm"/>
+                <ref bean="customerRealm"/>
+            </list>
+        </property>
 	</bean>
 	
+	<!-- 配置使用自定义认证器，可以实现多Realm认证，并且可以指定特定Realm处理特定类型的验证 -->
+    <bean id="authenticator" class="com.kcx.mall.common.shiroHelper.CustomizedModularRealmAuthenticator">
+        <!-- 配置认证策略，只要有一个Realm认证成功即可，并且返回所有认证成功信息 -->
+        <property name="authenticationStrategy">
+            <bean class="org.apache.shiro.authc.pam.AtLeastOneSuccessfulStrategy"></bean>
+        </property>
+    </bean>
+ 
+    <!-- 配置Realm -->
+    <bean id="shopRealm" class="com.kcx.mall.common.shiroHelper.ShopRealm"/>
+	
+	<!-- 配置Realm -->
+    <bean id="managerRealm" class="com.kcx.mall.common.shiroHelper.ManagerRealm"/>
+    
+    <!-- 配置Realm -->
+    <bean id="customerRealm" class="com.kcx.mall.common.shiroHelper.CustomerRealm"/>
+      	
 	<!-- 生命周期代理对象 -->
 	<bean
 		class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"

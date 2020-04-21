@@ -23,4 +23,7 @@ public interface ShopMapper {
 	
 	//查询商店信息
 	Shop queryById(int shopId);
+	
+	//根据商店名查询
+	Shop queryByName(String shopMinName);
 }

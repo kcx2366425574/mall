@@ -16,9 +16,11 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.kcx.mall.customer.service.CustomerService;
 import com.kcx.mall.manager.service.ManagerService;
 import com.kcx.mall.perm.service.PermissionService;
 import com.kcx.mall.perm.service.RoleService;
+import com.kcx.mall.shop.service.ShopService;
 
 /**
  * shiro的核心Realm（验证登录 和 查询读取当前登录的角色和权限）
@@ -30,7 +32,7 @@ public class ShiroRealm extends AuthorizingRealm {
 
 	@Autowired
 	private ManagerService manaService;
-
+	
 	@Autowired
 	private PermissionService permService;
 	

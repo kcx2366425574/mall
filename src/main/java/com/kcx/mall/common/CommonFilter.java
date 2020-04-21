@@ -62,6 +62,7 @@ public class CommonFilter implements Filter {
 			//登录判断
 			HttpSession session = request.getSession();			
 			String loginName = (String) session.getAttribute("loginName");
+			System.out.println(loginName);
 			if (loginName == null) {
 				
 				//判断是否是ajax请求
@@ -70,6 +71,7 @@ public class CommonFilter implements Filter {
 				if (xhr != null && xhr.equals("XMLHttpRequest")) {					
 					response.setHeader("sessionStatus", "timeout");	//响应前端一个自定义报头信息					
 				} else {
+					System.out.println("这是commonfilter里的重定向");
 					response.sendRedirect(app + "/logout.jsp"); //重定向到登录页
 				}
 				
