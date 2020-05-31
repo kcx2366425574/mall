@@ -78,7 +78,7 @@ classpath:/org/springframework/aop/config/spring-aop-3.0.xsd">
 		<dependency>
 		    <groupId>org.apache.lucene</groupId>
 		    <artifactId>lucene-core</artifactId>
-		    <version>4.7.0</version>
+		    <version>7.1.0</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.apache.lucene/lucene-queryparser -->
 		<dependency>
