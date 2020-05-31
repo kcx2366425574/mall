@@ -102,6 +102,14 @@ public class Customer {
 		this.cusContanctInfo = cusContanctInfo;
 	}
 	
+	//前端专用
+	public Customer(String cusLoginName, String cusPassword, String cusContanctInfo) {
+		super();
+		this.cusLoginName = cusLoginName;
+		this.cusPassword = cusPassword;
+		this.cusContanctInfo = cusContanctInfo;
+	}
+	
 
 	public Customer(String cusLoginName, String cusPassword, Boolean cusIson, Float cusAccount, String cusContanctInfo,
 			String cusPhoto) {
@@ -113,6 +121,8 @@ public class Customer {
 		this.cusContanctInfo = cusContanctInfo;
 		this.cusPhoto = cusPhoto;
 	}
+
+
 
 	public Customer(String cusLoginName, String cusPassword, Boolean cusIson, Float cusAccount) {
 		super();

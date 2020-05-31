@@ -25,10 +25,10 @@
 		#{picInfo,jdbcType=LONGVARCHAR})
 	</insert>
 	
-	<select id="queryByProId" resultMap="BaseResultMap" >
+	<select id="queryByProId" resultMap="ResultMapWithBLOBs" >
     select *
     from pic
-    where pic_pro_id = #{picPro.proId,jdbcType=INTEGER}
+    where pic_pro_id = #{picProId,jdbcType=INTEGER}
   </select>
   
   <delete id="deleteById" parameterType="java.lang.Integer">

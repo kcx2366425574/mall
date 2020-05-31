@@ -40,7 +40,7 @@
 				<div class="form-group">
 					<label for="" class="col-md-2">商品类型</label>
 					<div class="col-md-10">
-						<select name="proType.ptId" id="ptId" class="form-control">
+						<select name="proPt.ptId" id="ptId" class="form-control">
 							<option value="">请选择商品类型</option>							
 						</select>
 					</div>					
@@ -58,7 +58,7 @@
 				<div class="form-group">
 					<label for="" class="col-md-2">已选择图片</label>
 					<div class="col-md-10">
-						<input type="text" id="photo" name="photo" class="form-control" readonly="readonly" />
+						<input type="text" id="proPic" name="proPic" class="form-control" readonly="readonly" />
 					</div>
 				</div>
 				
@@ -81,17 +81,17 @@
 				
 		<script>
 			
-			//单击选择按钮
-			$('#test1').click(function() {
-				// 利用iframe加载其他网页内容到页面层 type:2
-				layer.open({
-					title: '选择图片',
-					type: 2,
-					area: ['1000px', '600px'], //宽高
-					content: 'choseOne.html'
-				})
-			})
-			
+			//获取商品类型
+			$.getJSON(baseUrl +'/proType/getAll',{},function(data){
+		    	var list = data.list;
+		    	$.each(list,function(index,el){
+		    		$('#ptId').append('<option value="' + el.ptId + '">'+ el.ptName +'</option>');
+		    		
+		    	});
+		    })
+		    .error(function(){
+		    	alert('获取商品类型失败');
+		    });
 			
 			//单击增加按钮
 			$('#addBtn').click(function(){
@@ -101,8 +101,7 @@
 				
 				//把表单的元素序列化为参数数据
 				var params = $('#form1').serialize();
-				console.log(params);
-				return;
+
 				//发出ajax请求调用后端接口
 				$.ajax({
 					type:"post", //请求类型get post
@@ -116,7 +115,7 @@
 					layer.msg('增加商品成功');	
 					
 					setTimeout(function(){
-						location.href = '../customerMain.html';//重定向到查询画面
+						location.href = '../customer/customerMain.html';//重定向到查询画面
 					},1000);
 				})
 				.fail(function(xhr,errorStatus,errorText){ //请求失败回调函数
@@ -170,7 +169,7 @@
 		            var img_div = $(".added_pics");
 		    		var img_html = '<div class="isImg" data-pic=""><img src="' + dataURL + '" class="chooseImg" /></div>';
 		    		img_div.append(img_html);
-		    		$('#photo').val(dataURL);
+		    		$('#proPic').val(dataURL);
 
 		        };
 		    };

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+	    <title>Document</title>
+	    <link rel="stylesheet" type="text/css" href="../js/res/static/css/main.css">
+	    <link rel="stylesheet" type="text/css" href="../js/res/layui/css/layui.css">
+	    <script type="text/javascript" src="../js/res/layui/layui.js"></script>
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+	</head>
+	<body>
+		<ul class="layui-nav">
+			<li class="layui-nav-item">
+			    <a href="">首页<span class="layui-badge">9</span></a>
+			</li>
+		    <li class="layui-nav-item">
+		    	<a href="">我的商品</a>
+		    	<dl class="layui-nav-child">
+			      	<dd><a href="productOnSale.html" target="content">已发布的商品</a></dd>
+			      	<dd><a href="producting.html" target="content">在审核的商品</a></dd>
+			      	
+			      	<dd><a href="failedProduct.html" target="content">审核未通过的商品</a></dd>
+		    	</dl>
+		  	</li>
+		  	<li class="layui-nav-item">
+		    	<a href="">发布新商品<span class="layui-badge-dot"></span></a>
+		  	</li>
+		  	<li class="layui-nav-item">
+		    	<a id="name" href=""><img id="head" class="layui-nav-img">{{loginName}}</a>
+		    	<dl class="layui-nav-child">
+			      	<dd><a href="updateManaPwd.html">修改密码</a></dd>
+			      	<dd><a href="updateManaHead.html">更新头像</a></dd>
+			      	<dd><a href="../logout.jsp">退出登录</a></dd>
+		    	</dl>
+		  	</li>
+		</ul>
+	</body>
+	
+	
+	<script type="text/javascript" src="../js/jquery.js" ></script>
+	<script type="text/javascript" src="../js/global.js" ></script>
+	<script type="text/javascript" src="../js/bootstrap/js/bootstrap.js" ></script>
+	<script type="text/javascript" src="../js/layer/layer.js"></script>
+	<script type="text/javascript" src="../js/vue/vue2.5.js" ></script>
+	<script src="../js/layui/layui.all.js"></script>
+	
+	<script type="text/javascript">
+		var vName = new Vue({
+			el:'#name',
+			data:{
+				loginName:''
+			},
+			methods:{
+				ini:function() {  //初始化
+															
+											
+					//发出ajax请求调用后端接口
+					var url = baseUrl + "/customer/getName";
+					
+					$.ajax({
+						type:"get", //请求类型get post
+						url: url, //请求url地址
+						async:true, //true默认表示异步请求
+						dataType:'text', //响应的数据类型	
+					})
+					.done(function(data,status,xhr){ //请求成功回调函数
+						vName.loginName = data;
+					})
+					.fail(function(xhr,errorStatus,errorText){ //请求失败回调函数
+						alert(errorStatus + ',' + errorText);				
+					});
+				}
+			}
+		});
+			
+		vName.ini();
+	</script>
+</html>

@@ -2,10 +2,12 @@ package com.kcx.mall.custest;
 
 import java.util.List;
 
+import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.kcx.mall.common.Constant;
 import com.kcx.mall.customer.dao.CustomerMapper;
 import com.kcx.mall.customer.pojo.Customer;
 
@@ -45,8 +47,21 @@ public class DaoTest {
 	 */
 	@Test
 	public void testInsert() {
-		Customer customer = new Customer("liyi", "123456", false, 99.0f);
+		Customer customer = new Customer("liyi", "123456", false, 99.0f,"测试数据，联系方式没有", Constant.PHOTO_STRING);
 		mapper.insert(customer);
+	}
+	
+	/**
+	 * 批量新增用户
+	 */
+	@Test
+	public void testAddMany() {
+		String cusPassword = new Sha256Hash("123456", "我有一只小花猫", 10).toBase64();
+		for (int i = 0;i<20;i++) {
+			float account = (float) (Math.random()*1000.0);
+			Customer customer = new Customer("ceshi"+i, cusPassword, false, account, "测试数据，联系方式没有", Constant.PHOTO_STRING);
+			mapper.insert(customer);
+		}
 	}
 	
 	/**
@@ -68,5 +83,17 @@ public class DaoTest {
 	public void testdeleteById() {
 		mapper.deleteById(4);
 	}
+	
+	/**
+	 * 查询头像
+	 */
+	@Test
+	public void testGetHead() {
+		String head = mapper.queryHead(1);
+		System.out.println(head);
+	}
+	
+	
+	
 	
 }

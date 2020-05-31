@@ -13,12 +13,12 @@
   <insert id="addMana" parameterType="com.kcx.mall.manager.pojo.Manager">
 		insert into manager (mana_id,
 		mana_name, mana_password,
-		mana_ison,mana_info)
+		mana_ison,mana_info,mana_photo)
 		values (default,
 		#{manaName,jdbcType=VARCHAR},
 		#{manaPassword,jdbcType=VARCHAR},
 		#{manaIson,jdbcType=TINYINT},
-		#{manaInfo,jdbcType=VARCHAR})
+		#{manaInfo,jdbcType=VARCHAR}, #{manaPhoto,jdbcType=LONGVARCHAR})
 	</insert>
 	
 	<delete id="deleteByManaId" parameterType="java.lang.Integer">

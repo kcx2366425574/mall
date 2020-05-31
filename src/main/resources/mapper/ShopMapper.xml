@@ -20,18 +20,21 @@
 		<result column="mana_password" property="manaPassword" jdbcType="VARCHAR" />
 	</association>
   </resultMap>
-  
+  <resultMap id="ResultMapWithBLOBs" type="com.kcx.mall.shop.pojo.Shop" extends="BaseResultMap" >
+    <result column="shop_photo" property="shopPhoto" jdbcType="LONGVARCHAR" />
+  </resultMap>
   <insert id="addShop" parameterType="com.kcx.mall.shop.pojo.Shop">
 		insert into shop (shop_id,
 		shop_name,shop_minname, shop_password,
 		shop_info, shop_address, shop_owner,shop_owner_idcard,
-		shop_account,shop_state,shop_mana)
+		shop_account,shop_state,shop_mana,shop_photo)
 		values (default,
 		#{shopName,jdbcType=VARCHAR},#{shopMinname,jdbcType=VARCHAR},
 		#{shopPassword,jdbcType=VARCHAR},#{shopInfo,jdbcType=VARCHAR},
 		#{shopAddress,jdbcType=VARCHAR},#{shopOwner,jdbcType=VARCHAR},
 		#{shopOwnerIdcard,jdbcType=VARCHAR},#{shopAccount,jdbcType=FLOAT},
-		#{shopState,jdbcType=VARCHAR},#{shopMana.manaId,jdbcType=INTEGER})
+		#{shopState,jdbcType=VARCHAR},#{shopMana.manaId,jdbcType=INTEGER},
+		#{proPic,jdbcType=LONGVARCHAR})
 	</insert>
   
   <delete id="deleteShop" parameterType="java.lang.Integer">
@@ -67,5 +70,10 @@
     from shop
     where shop_minname = #{shopMinName,jdbcType=VARCHAR}
   </select>
+  
+  <!-- 获取用户头像 -->
+	<select id="queryHead" parameterType="java.lang.Integer" resultType="java.lang.String">
+		select shop_photo from shop where shop_id=#{shopId}
+	</select>
   
 </mapper>

@@ -5,10 +5,13 @@ package com.kcx.mall.product;
  * @description 
  */
 
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.kcx.mall.common.Pager;
 import com.kcx.mall.customer.dao.CustomerMapper;
 import com.kcx.mall.customer.pojo.Customer;
 import com.kcx.mall.manager.dao.ManagerMapper;
@@ -17,6 +20,8 @@ import com.kcx.mall.product.dao.ProTypeMapper;
 import com.kcx.mall.product.dao.ProductMapper;
 import com.kcx.mall.product.pojo.ProType;
 import com.kcx.mall.product.pojo.Product;
+import com.kcx.mall.shop.dao.ShopMapper;
+import com.kcx.mall.shop.pojo.Shop;
 
 public class ProductDaoTest {
 	
@@ -28,6 +33,7 @@ public class ProductDaoTest {
 	ManagerMapper managerMapper = context.getBean(ManagerMapper.class);
 	CustomerMapper customerMapper = context.getBean(CustomerMapper.class);
 	ProTypeMapper proTypeMapper = context.getBean(ProTypeMapper.class);
+	ShopMapper shopMapper = context.getBean(ShopMapper.class);
 	
 	/**
 	 * 增加商品
@@ -43,11 +49,46 @@ public class ProductDaoTest {
 	}
 	
 	/**
+	 * 增加商品
+	 */
+	@Test
+	public void testAddMany() {
+		for(int i=0;i<10;i++) {
+			Shop shop = shopMapper.queryById(1);
+			ProType proPt = proTypeMapper.queryById(13);
+			Manager proMana = managerMapper.queryById(1);
+			Product product = new Product("测试产品"+i, 13.0f, "啥也没有的测试产品", null, shop, proPt, "审核通过", proMana, pic);
+			mapper.addProduct(product);
+		}
+		
+		
+	}
+	
+	/**
 	 * 删除商品
 	 */
 	@Test
 	public void testDelete() {
 		mapper.deleteProduct(2);
+	}
+	
+	/**
+	 * 查询商品总数
+	 */
+	@Test
+	public void testAllCount() {
+		System.out.println(mapper.getAllCount());
+	}
+	
+	//动态查询商品
+	@Test
+	public void testQueryByCondition() {
+		int recordCount = mapper.getCountByCondition(null, null, null, "审核通过");
+		Pager pager = new Pager(recordCount, 6, 1);
+		List<Product> list = mapper.queryByCondition(pager.getStart(), pager.getPageSize(), null, null, null, "审核通过");
+		for (Product product : list) {
+			System.out.println(product);
+		}
 	}
 
 }

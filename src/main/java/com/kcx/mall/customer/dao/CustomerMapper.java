@@ -15,8 +15,19 @@ public interface CustomerMapper {
 	//按id查询
 	Customer selectById(int cusId);
 	
+	void updateMoney(@Param("cusId")int cusId,@Param("cusAccount")float cusAccount);
+	
+	//更新头像
+	void updateHead(@Param("cusId")int cusId,@Param("cusPhoto")String cusPhoto);
+	
+	//修改密码
+	void updatePwd(@Param("cusId")int cusId,@Param("cusPassword")String cusPassword);
+	
 	//通过登录名查询
 	Customer selectByLoginName(String cusLoginName);
+	
+	//查询头像
+	String queryHead(int cusId);
 	
 	//增加新用户
 	void insert(Customer customer);

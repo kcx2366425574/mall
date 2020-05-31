@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kcx.dao.ProRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.kcx.pojo.ProRecord" >
+    <id column="pr_id" property="prId" jdbcType="INTEGER" />
+    <result column="pr_time" property="prTime" jdbcType="TIMESTAMP" />
+    
+    <!-- 用户映射 -->
+	<association property="prCus" javaType="com.kcx.mall.customer.pojo.Customer">
+		<id column="cus_id" property="cusId" jdbcType="INTEGER" />
+		<result column="cus_login_name" property="cusLoginName" jdbcType="VARCHAR" />
+		<result column="cus_password" property="cusPassword" jdbcType="VARCHAR" />
+		<result column="cus_account" property="cusAccount" jdbcType="FLOAT" />
+		<result column="cus_contanct_info" property="cusContanctInfo" jdbcType="VARCHAR" />
+	</association>
+	
+	<!-- 商家映射 -->
+	<association property="prShop" javaType="com.kcx.mall.shop.pojo.Shop">
+		<id column="shop_id" property="shopId" jdbcType="INTEGER" />
+		<result column="shop_name" property="shopName" jdbcType="VARCHAR" />
+		<result column="shop_minname" property="shopMinname" jdbcType="VARCHAR" />
+	</association>
+	
+	<!-- 商品映射 -->
+	<association property="prProduct" javaType="com.kcx.mall.product.pojo.Product">
+		<id column="pro_id" property="proId" jdbcType="INTEGER" />
+		<result column="pro_name" property="proName" jdbcType="VARCHAR" />
+	</association>
+  </resultMap>
+  
+	<insert id="insert" parameterType="com.kcx.mall.product.pojo.ProRecord">
+		insert into pro_record (pr_id,
+		pr_pro_id, pr_cus_id,
+		pr_shop_id,pr_time)
+		values (default,
+		#{prProduct.proId,jdbcType=INTEGER},
+		#{prShop.shopId,jdbcType=INTEGER},
+		#{prCus.cusId,jdbcType=INTEGER}, #{prTime})
+	</insert>
+</mapper>

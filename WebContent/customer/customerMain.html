@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <link rel="stylesheet" type="text/css" href="../css/bootstrap.css" />
+  <link rel="stylesheet" type="text/css" href="../js/res/static/css/main.css">
+  <link rel="stylesheet" type="text/css" href="../js/res/layui/css/layui.css">
+  <script type="text/javascript" src="../js/res/layui/layui.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <style>
+		
+		</style>
+</head>
+<body>
+	
+	<ul class="layui-nav">
+			<li class="layui-nav-item">
+			    <a href="customerMain.html">首页</a>
+			</li>
+		    <li class="layui-nav-item">
+		    	<a href="">我的商品</a>
+		    	<dl class="layui-nav-child">
+			      	<dd><a href="productOnSale.html">已发布的商品</a></dd>
+			      	<dd><a href="producting.html">在审核的商品</a></dd>
+			      	
+			      	<dd><a href="failedProduct.html">审核未通过的商品</a></dd>
+		    	</dl>
+		  	</li>
+		  	<li class="layui-nav-item">
+		    	<a href="../product/addProduct.html">发布新商品</a>
+		  	</li>
+		  	<li class="layui-nav-item">
+		    	<a id="name" href=""><img id="head" class="layui-nav-img">{{loginName}}</a>
+		    	<dl class="layui-nav-child">
+			      	<dd><a href="updateCusPwd.html">修改密码</a></dd>
+			      	<dd><a href="updateCusHead.html">更新头像</a></dd>
+			      	<dd><a href="../logout.jsp">退出登录</a></dd>
+		    	</dl>
+		  	</li>
+		</ul>
+	
+	<div id="co">
+  <div class="header">
+    <div class="headerLayout w1200">
+      <div class="headerCon">
+        <h1 class="mallLogo" id="initInfo">
+          二手交易
+        </h1>
+        <div class="mallSearch">
+          <form action="" class="layui-form" novalidate>
+            <input type="text" id="searchInfo" name="searchInfo" required  lay-verify="required" autocomplete="off" class="layui-input" placeholder="请输入需要的商品">
+            <button class="layui-btn" @click="findByIndex();" lay-submit lay-filter="formDemo">
+                <i class="layui-icon layui-icon-search"></i>
+            </button>
+            <input type="hidden" name="" value="">
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="content content-nav-base commodity-content">
+ 
+    <div class="commod-cont-wrap">
+      <div class="commod-cont w1200 layui-clear" id="box">
+        <div class="left-nav">
+          <div class="title">所有分类</div>
+          <div class="list-box">
+            <dl>
+             <dt>女人</dt>
+             <dd><a href="javascript:;" @click="findPro(2);">上衣</a></dd>
+             <dd><a href="javascript:;" @click="findPro(1);">下装</a></dd>
+             <dd><a href="javascript:;" @click="findPro(3);">鞋靴</a></dd>
+            </dl>
+            <dl>
+             <dt>男人</dt>
+             <dd><a href="javascript:;" @click="findPro(13);">上衣</a></dd>
+             <dd><a href="javascript:;" @click="findPro(14);">下装</a></dd>
+             <dd><a href="javascript:;" @click="findPro(12);">男靴</a></dd>
+             <dd><a href="javascript:;" @click="findPro(15);">配饰</a></dd>
+            </dl>
+            <dl>
+             <dt>数码</dt>
+             <dd><a href="javascript:;" @click="findPro(4);">电脑</a></dd>
+             <dd><a href="javascript:;" @click="findPro(5);">手机</a></dd>
+             <dd><a href="javascript:;" @click="findPro(6);">耳机</a></dd>
+            </dl>
+            <dl>
+             <dt>家居</dt>
+             <dd><a href="javascript:;" @click="findPro(7);">电器</a></dd>
+             <dd><a href="javascript:;" @click="findPro(9);">锅</a></dd>
+             <dd><a href="javascript:;" @click="findPro(8);">衣架</a></dd>
+            </dl>
+            <dl>
+             <dt>箱包</dt>
+             <dd><a href="javascript:;" @click="findPro(16);">钱包</a></dd>
+             <dd><a href="javascript:;" @click="findPro(17);">背包</a></dd>
+             <dd><a href="javascript:;" @click="findPro(18);">行李箱</a></dd>
+            </dl>
+          </div>
+        </div>
+        <div class="right-cont-wrap">
+          <div class="right-cont" id="l">
+           <div class="cont-list layui-clear" id="list-cont" >
+              
+              
+              
+            </div>
+            
+		            <div class="row" id="pager" v-show="pager.recordCount!=0">
+									<div class="offset-md-4 col-sm-8">
+										<nav>
+								        	<ul class="pagination">
+								        		<li v-show="pager.pageNum!=1" class="page-item"><a class="page-link" href="javascript:void(0);" @click="query(1);">首页</a></li>
+						                <li v-show="pager.pageNum!=1" class="page-item"><a class="page-link" href="javascript:void(0);" @click="query(pager.pageNum-1);">上一页</a></li>
+						                
+						                <li :class="{active:item==pager.pageNum}" class="page-item" v-for="(item,index) in pageBtn"><a class="page-link" href="javascript:void(0);" @click="query(item);">第{{item}}页</a></li>
+						                			                
+						                <li v-show="pager.pageNum!=pager.pageCount" class="page-item"><a class="page-link" href="javascript:void(0);" @click="query(pager.pageNum+1);">下一页</a></li>
+						                <li v-show="pager.pageNum!=pager.pageCount" class="page-item"><a class="page-link" href="javascript:void(0);" @click="query(pager.pageCount);">尾页</a></li>			                
+								        	</ul>
+								        </nav>
+									</div>				
+								</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+  <script type="text/javascript" src="../js/jquery.js" ></script>
+	<script type="text/javascript" src="../js/global.js" ></script>
+	<script type="text/javascript" src="../js/bootstrap/js/bootstrap.js" ></script>
+	<script type="text/javascript" src="../js/layer/layer.js"></script>
+	<script type="text/javascript" src="../js/vue/vue2.5.js" ></script>
+	<script src="../js/layui/layui.all.js"></script>
+<script>
+
+  layui.config({
+    base: '../js/res/static/js/util/' //你存放新模块的目录，注意，不是layui的模块目录
+  }).use(['mm','laypage','jquery'],function(){
+      var laypage = layui.laypage,$ = layui.$,
+     mm = layui.mm;
+       laypage.render({
+        elem: 'demo0'
+        ,count: 100 //数据总数
+      });
+
+
+    $('.sort a').on('click',function(){
+      $(this).addClass('active').siblings().removeClass('active');
+    })
+    $('.list-box dt').on('click',function(){
+      if($(this).attr('off')){
+        $(this).removeClass('active').siblings('dd').show()
+        $(this).attr('off','')
+      }else{
+        $(this).addClass('active').siblings('dd').hide()
+        $(this).attr('off',true)
+      }
+    })
+
+});
+</script>
+
+<script type="text/javascript">
+	var vName = new Vue({
+				el:'#name',
+				data:{
+					loginName:''
+				},
+				methods:{
+					ini:function() {  //初始化
+																
+												
+						//发出ajax请求调用后端接口
+						var url = baseUrl + "/customer/getName";
+						
+						$.ajax({
+							type:"get", //请求类型get post
+							url: url, //请求url地址
+							async:true, //true默认表示异步请求
+							dataType:'text', //响应的数据类型	
+						})
+						.done(function(data,status,xhr){ //请求成功回调函数
+							vName.loginName = data;
+						})
+						.fail(function(xhr,errorStatus,errorText){ //请求失败回调函数
+							alert(errorStatus + ',' + errorText);				
+						});
+					}
+				}
+			});
+				
+			vName.ini();
+			
+			
+			$.ajax({
+				type: "get", //请求类型get post
+				url: baseUrl+'/customer/getHeadById', //请求url地址
+				async: true, //true默认表示异步请求
+				dataType: 'text', //响应的数据类型	
+			})
+			.done(function(data, status, xhr) { //请求成功回调函数
+				$('#head').attr('src',data);
+			})
+			.fail(function(xhr, errorStatus, errorText) { //请求失败回调函数
+				alert(errorStatus + ',' + errorText);
+			});
+			
+			
+</script>
+
+<script type="text/javascript">
+	//vue绑定
+	var v = new Vue({
+		el:'#co',
+		data:{
+			productData:[],
+			pager:{},
+			pageBtn:[]
+		},
+		methods:{
+			query:function(pageNum) {			
+				var url = baseUrl + "/product/getAll";
+
+				
+				var params = {
+					pageNum:pageNum,
+					pageSize:6,
+				}
+				
+				$.ajax({
+					type:"POST", 
+					url: url,
+					async:false,
+					dataType:'json',
+					data:params
+				})
+				.done(function(data,status,xhr){
+					v.productData = data.list;	
+					v.pager = data.pager;
+					
+					var start = v.pager.pageNum - 2;
+					var end = v.pager.pageNum + 2;
+					
+					if (v.pager.pageNum < 3) {
+						start = 1;
+						end = 5;
+					}
+					
+					if (end > v.pager.pageCount) {
+						end = v.pager.pageCount;								
+					}
+					
+					if (v.pager.pageCount < 5) {
+						start = 1;
+						end = v.pager.pageCount;
+					}
+					
+					v.pageBtn = [];
+					
+					for (var i = start;i <= end;i ++) {
+						v.pageBtn.push(i);
+					}
+					
+					
+					var container = $('#list-cont');
+					container.empty();
+					var count = 0;								
+							
+							 	
+							
+							 	
+							 	
+						 for(var i = 0;i<2;i++){
+						 	for(var j = 0;j<3,v.productData[count]!=null;j++){
+						 		
+						 		var str = "<div class='item'>\
+	                <div class='img'>\
+	                	<input type='hidden' id='proId' name='proId' value='" + v.productData[count].proId  + "'/>\
+	                  <a href='javascript:;'><img style='width: 280px;height: 300px;' id='imgs" + `_${i}_${j}'`  + "></a>\
+	                </div>\
+	                <div class='text'>\
+	                  <p class='title' id='text" + `_${i}_${j}'`  + "></p>\
+	                  <p class='price'>\
+	                    <span class='pri' id='price" + `_${i}_${j}'`  + "></span>\
+	                  </p>\
+	                </div>\
+	              </div>";
+	              
+	              container.append(str);
+	              var images = $('#imgs'+`_${i}_${j}`);
+	              var price = $('#price'+`_${i}_${j}`);
+	              var info = $('#text'+`_${i}_${j}`);
+				        var urls = baseUrl+"/product/queryPic";
+				        
+				        info.html(v.productData[count].proName);
+				        price.text(v.productData[count].proPrice);
+				        $.ajax({
+									type:"get",
+									url:urls,
+									async:false,
+									dataType:'text',
+									data:{proId:v.productData[count].proId}
+								})
+								.done(function(data,status,xhr){
+									images.attr("src",data);	
+								})
+								.fail(function(xhr,errorStatus,errorText){
+									alert(errorStatus + ',' + errorText);
+								});
+						        
+					
+						    count++;
+              
+						 		
+						 	}
+						 }	
+					
+				})
+				.fail(function(xhr,errorStatus,errorText){
+					alert(errorStatus + ',' + errorText);				
+				});							
+			},
+			findPro:function(index){
+				//发出ajax请求调用后端接口
+				$.ajax({
+					type:"post", //请求类型get post
+					url: baseUrl + "/product/getByConditionNoPager", //请求url地址
+					async:true, //true默认表示异步请求
+					dataType:'json', //响应的数据类型
+					data:{
+						proPtId:index,
+						needId:false,
+						proState:'审核通过',
+					}   //请求参数数据
+				})
+				.done(function(data,status,xhr){ //请求成功回调函数
+					v.productData = data;
+					
+					$("#pager").hide();
+					var container = $('#list-cont');
+					container.empty();
+					
+						 	for(var j = 0;j<v.productData.length;j++){
+						 		
+						 		var str = "<div class='item'>\
+	                <div class='img'>\
+	                	<input type='hidden' id='proId' name='proId' value='" + v.productData[j].proId  + "'/>\
+	                  <a href='javascript:;'><img style='width: 280px;height: 300px;' id='imgs" + `_${j}'`  + "></a>\
+	                </div>\
+	                <div class='text'>\
+	                  <p class='title' id='text" + `_${j}'`  + "></p>\
+	                  <p class='price'>\
+	                    <span class='pri' id='price" + `_${j}'`  + "></span>\
+	                  </p>\
+	                </div>\
+	              </div>";
+	              
+	              container.append(str);
+	              var images = $('#imgs'+`_${j}`);
+	              var price = $('#price'+`_${j}`);
+	              var info = $('#text'+`_${j}`);
+				        var urls = baseUrl+"/product/queryPic";
+				        
+				        info.html(v.productData[j].proName);
+				        price.text(v.productData[j].proPrice);
+				        $.ajax({
+									type:"get",
+									url:urls,
+									async:false,
+									dataType:'text',
+									data:{proId:v.productData[j].proId}
+								})
+								.done(function(data,status,xhr){
+									images.attr("src",data);	
+								})
+								.fail(function(xhr,errorStatus,errorText){
+									alert(errorStatus + ',' + errorText);
+								});				 
+						 }
+				})
+				.fail(function(xhr,errorStatus,errorText){ //请求失败回调函数
+					alert(errorStatus + ',' + errorText);
+					layer.closeAll();//关闭加载
+				});	
+			},
+			findByIndex:function() {	 //查询		
+				//发出ajax请求调用后端接口
+				var url = baseUrl + "/product/queryByIndex";
+				var queryStr = $('#searchInfo').val();
+				//请求参数
+				var params = {
+					queryStr:queryStr
+				}
+				$.ajax({
+					type:"POST", //请求类型get post
+					url: url, //请求url地址
+					async:true, //true默认表示异步请求
+					dataType:'json', //响应的数据类型
+					data:params     //请求参数
+				})
+				.done(function(data,status,xhr){ //请求成功回调函数
+					//把响应的数据赋值给vue数据模型中的变量
+					v.productData = data;
+					console.log(data);
+					
+				})
+				.fail(function(xhr,errorStatus,errorText){ //请求失败回调函数
+					alert(errorStatus + ',' + errorText);				
+				});							
+			},
+			
+		},
+	});
+	
+	v.query(1);	
+	
+	
+	$('#searchPro').click(function(){
+		
+	})
+	
+	
+	$('.img').click(function(e){
+		//获取该商品的proId
+		var temp = this.innerHTML.split(' ');
+		var proId;
+		for(var i=0;i<temp.length;i++){
+			var s = temp[i].split('=');
+			if(s[0]=='value') proId=s[1];
+		}
+		var index = proId.split('"');
+    proId = index[1];
+		var theUrl = baseUrl+"/product/detail.html?proId="+proId;
+	  window.open(theUrl);
+	});
+	
+
+</script>
+
+
+</body>
+</html>

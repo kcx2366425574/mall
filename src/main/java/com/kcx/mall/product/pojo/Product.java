@@ -138,6 +138,17 @@ public class Product {
 		this.proMana = proMana;
 		this.proPic = proPic;
 	}
+	
+	
+	//前端专用构造方法
+	public Product(String proName, Float proPrice, String proInfo, ProType proPt, String proPic) {
+		super();
+		this.proName = proName;
+		this.proPrice = proPrice;
+		this.proInfo = proInfo;
+		this.proPt = proPt;
+		this.proPic = proPic;
+	}
 
 	public Product(Integer proId, String proName, Float proPrice, String proInfo, Customer proCus, Shop proShop,
 			ProType proPt, String proState, Manager proMana, String proPic) {

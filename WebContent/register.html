@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="js/layui/css/layui.css" />
+		<link rel="stylesheet" href="js/bootstrap/css/bootstrap.css" />
+
+		<title></title>
+	</head>
+	<body>
+		
+		<form class="form-horizontal col-md-10" id="form1">
+
+			<div class="form-group">
+				<div class="col-md-4 col-md-offset-4">						
+					<input type="button" value="用户注册" class="btn btn-primary btn-block" id="customerType"/>
+				</div>				
+			</div>
+			<div class="form-group">
+				<div class="col-md-4 col-md-offset-4">						
+					<input type="button" value="商家注册" class="btn btn-primary btn-block" id="shopType"/>
+				</div>				
+			</div>
+		</form>			
+		
+	</body>
+	
+	<script type="text/javascript" src="js/layui/layui.all.js" ></script>
+	<script type="text/javascript" src="js/jquery.js" ></script>
+
+	<script type="text/javascript" src="js/bootstrap/js/bootstrap.js" ></script>
+	
+	<script type="text/javascript">
+		$('#customerType').click(function(){
+			window.parent.location.href = '/mall/customer/addCustomer.html';//重定向到查询画面
+			window.parent.layer.closeAll();
+			
+		});
+		
+		
+		$('#shopType').click(function(){
+			window.parent.location.href = '/mall/shop/addShop.html';//重定向到查询画面
+			window.parent.layer.closeAll();
+			
+		});
+	</script>
+</html>

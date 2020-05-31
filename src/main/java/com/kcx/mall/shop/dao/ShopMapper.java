@@ -26,4 +26,7 @@ public interface ShopMapper {
 	
 	//根据商店名查询
 	Shop queryByName(String shopMinName);
+	
+	//通过id获得头像
+	String queryHead(int shopId);
 }

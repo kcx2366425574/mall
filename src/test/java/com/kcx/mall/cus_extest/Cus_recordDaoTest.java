@@ -1,13 +1,11 @@
 package com.kcx.mall.cus_extest;
 
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.format.datetime.DateFormatter;
 
 import com.kcx.mall.customer.dao.CusRecordMapper;
 import com.kcx.mall.customer.dao.CustomerMapper;

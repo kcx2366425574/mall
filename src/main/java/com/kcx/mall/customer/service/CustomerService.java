@@ -68,6 +68,11 @@ public class CustomerService {
 		mapper.update(customer);
 	}
 	
+	//修改用户余额
+	public void updateMoney(int cusId,float cusAccount) {
+		mapper.updateMoney(cusId, cusAccount);
+	}
+	
 	//根据id查询用户
 	@Transactional(readOnly=true)
 	public Customer queryById(int cusId) {
@@ -84,6 +89,22 @@ public class CustomerService {
 	@Transactional(readOnly=true)
 	public Customer queryByLoginName(String cusLoginName) {
 		return mapper.selectByLoginName(cusLoginName);
+	}
+	
+	//根据id查询用户头像
+	@Transactional(readOnly=true)
+	public String queryHeadById(int cusId) {
+		return mapper.queryHead(cusId);
+	}
+	
+	//更新头像
+	public void updateHead(int cusId,String cusPhoto) {
+		mapper.updateHead(cusId, cusPhoto);
+	}
+	
+	//更新密码
+	public void updatePwd(int cusId,String cusPassword) {
+		mapper.updatePwd(cusId, cusPassword);
 	}
 	
 }

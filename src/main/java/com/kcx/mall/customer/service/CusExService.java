@@ -41,8 +41,9 @@ public class CusExService {
 	
 	//根据id查询用户
 	@Transactional(readOnly=true)
-	public CusEx queryById(int cusId) {
-		return mapper.queryByCusId(cusId);
+	public CusEx queryById(int ceCusId) {
+		System.out.println("这是service的cusId:"+ceCusId);
+		return mapper.queryByCusId(ceCusId);
 	}
 	
 	//查询所有用户扩展

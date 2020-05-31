@@ -22,7 +22,7 @@
 	</association>
 	
 	<!-- 商品类型映射 -->
-	<association property="proType" javaType="com.kcx.mall.product.pojo.ProType">
+	<association property="proPt" javaType="com.kcx.mall.product.pojo.ProType">
 		<id column="pt_id" property="ptId" jdbcType="INTEGER" />
 		<result column="pt_name" property="ptName" jdbcType="VARCHAR" />
 	</association>
@@ -62,6 +62,14 @@
 		</foreach>
 	</delete>
 	
+	<update id="buyMany" parameterType="Integer[]">
+		update product set pro_state = '已购买' where pro_id in
+		<foreach collection="array" index="i" item="proId" open="("
+			close=")" separator=",">
+			#{proId}
+		</foreach>
+	</update>
+	
 	<update id="updateProduct" parameterType="com.kcx.mall.product.pojo.Product">
 		update product set 
 		pro_name = #{proName,jdbcType=VARCHAR},
@@ -73,6 +81,16 @@
 		pro_mana_id = #{proManaId,jdbcType=INTEGER}
 		where pro_id = #{proId,jdbcType=INTEGER}
 	</update>
+	
+	<update id="updateState" parameterType="java.lang.Integer">
+		update product set 
+		pro_state = '已购买'
+		where pro_id = #{proId,jdbcType=INTEGER}
+	</update>
+	
+	<select id="getLastInsertId" resultType="java.lang.Integer">
+		SELECT LAST_INSERT_ID()
+	</select>
 	
 	<update id="updateMany" parameterType="Integer[]">
 		update product set 
@@ -91,6 +109,31 @@
     where pro_id = #{proId,jdbcType=INTEGER}
   </select>
   
+  <select id="queryTotalById" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select *
+    from product
+    where pro_id = #{proId,jdbcType=INTEGER}
+  </select>
+  
+  <select id="queryPhoto" resultType="java.lang.String" parameterType="java.lang.Integer" >
+    select p.pro_pic
+    from product p
+    where pro_id = #{proId,jdbcType=INTEGER}
+  </select>
+  
+  <select id="getAllCount" resultType="java.lang.Integer">
+    select count(*)
+    from product
+    where pro_state = "审核通过"
+  </select>
+  
+  <select id="query" resultMap="BaseResultMap">
+    select *
+    from product
+    where pro_state = "审核通过" 
+    LIMIT #{start}, #{pageSize}
+  </select>
+  
 	  <!-- 根据条件获得总记录数 -->
 	<select id="getCountByCondition" parameterType="com.kcx.mall.product.pojo.Product"
 		resultType="java.lang.Integer">
@@ -106,6 +149,9 @@
 			</if>
 			<if test="proPtId != null">
 			    and pro_pt_id = #{proPtId}
+			</if>
+			<if test="proState != null">
+			    and pro_state = #{proState,jdbcType=VARCHAR}
 			</if>
 		</where>
 	</select>
@@ -131,9 +177,38 @@
 			<if test="proPtId != null">
 			    and pro_pt_id = #{proPtId}
 			</if>
-			
+			<if test="proState != null">
+			    and pro_state = #{proState,jdbcType=VARCHAR}
+			</if>
 		</where>
 		LIMIT #{start}, #{pageSize}
+	</select>
+	
+	<!-- 使用mysql的instr函数判断是否包含数据,模糊查询 -->
+	<select id="queryByConditionNoPager" resultMap="BaseResultMap">
+		SELECT *
+		FROM product p
+		LEFT OUTER JOIN customer cus
+		ON p.`pro_cus_id`
+		= cus.`cus_id`
+		LEFT OUTER JOIN shop sh ON
+		p.`pro_shop_id` = sh.`shop_id`
+		LEFT OUTER JOIN pro_type pt ON
+		p.`pro_pt_id` = pt.`pt_id`
+		<where>
+		    <if test="proCusId != null">
+				and pro_cus_id = #{proCusId,jdbcType=INTEGER}
+			</if>
+			<if test="proShopId != null">
+				and pro_shop_id = #{proShopId,jdbcType=INTEGER}
+			</if>
+			<if test="proPtId != null">
+			    and pro_pt_id = #{proPtId}
+			</if>
+			<if test="proState != null">
+			    and pro_state = #{proState,jdbcType=VARCHAR}
+			</if>
+		</where>
 	</select>
   
 </mapper>

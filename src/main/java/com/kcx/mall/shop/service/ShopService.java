@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.kcx.mall.product.dao.ProductMapper;
 import com.kcx.mall.shop.dao.ShopMapper;
 import com.kcx.mall.shop.pojo.Shop;
 
@@ -18,6 +19,7 @@ public class ShopService {
 	@Autowired
 	private ShopMapper mapper;
 	
+	@Autowired ProductMapper productMapper;
 	//通过id查询
 	@Transactional(readOnly=true)
 	public Shop queryById(int shopId) {
@@ -45,5 +47,16 @@ public class ShopService {
 		else{
 			return 3;
 		}
+	}
+	
+	//根据id查询用户头像
+	@Transactional(readOnly=true)
+	public String queryHeadById(int shopId) {
+		return mapper.queryHead(shopId);
+	}
+	
+	//批量购买
+	public void buyMany(int[] ids) {
+		productMapper.buyMany(ids);
 	}
 }

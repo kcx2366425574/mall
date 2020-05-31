@@ -15,14 +15,18 @@ import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Conditional;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.kcx.mall.common.shiroHelper.CustomizedToken;
 import com.kcx.mall.common.shiroHelper.LoginType;
+import com.kcx.mall.manager.pojo.Manager;
 import com.kcx.mall.shop.pojo.Shop;
 import com.kcx.mall.shop.service.ShopService;
 
+@Controller
 public class ShopController {
 
 	private static final String SHOP_LOGIN_TYPE = LoginType.SHOP.toString();
@@ -40,6 +44,7 @@ public class ShopController {
 	@RequestMapping("/shop/login")
 	@ResponseBody
 	public Integer login(HttpServletRequest request, HttpServletResponse response, String loginName, String pwd) {
+		System.out.println(loginName+" "+pwd);
 		// 密码加密
 		pwd = new Sha256Hash(pwd, "我有一只小花猫", 10).toBase64();
 
@@ -58,11 +63,44 @@ public class ShopController {
 		}
 		Shop shop = service.queryByName(loginName);		
 		
-		// 如果登录成功，session中记录当前管理员的登录名（管理员id）
+		// 如果登录成功，session中记录当前商家的登录名（商家id）
 		HttpSession session = request.getSession();
 		session.setAttribute("loginName", loginName); // 记录登录名
 		session.setAttribute("loginType", "shop");
 		session.setAttribute("loginId", shop.getShopId()); // 记录id
 		return 3;
+	}
+	
+	//检测登录名
+	@RequestMapping("/shop/checkLoginName")
+	@ResponseBody
+	public Boolean checkLoginName(HttpServletRequest request, HttpServletResponse response,String loginName) {
+		Shop shop = service.queryByName(loginName);
+		if (shop == null)
+			return true;
+		return false;
+	}
+	
+	//获取登录名
+	@RequestMapping("/shop/getName")
+	@ResponseBody
+	public String getName(HttpServletRequest request, HttpServletResponse response) {
+		HttpSession session = request.getSession();
+		return (String) session.getAttribute("loginName");
+	}
+	
+	// 批量购买
+	@RequestMapping("/shop/buyMany")
+	public void buyProMany(HttpServletRequest request, HttpServletResponse response, int[] ids) {
+		service.buyMany(ids);
+	}
+	
+	// 通过Id得到用户头像
+	@RequestMapping("/shop/getHeadById")
+	@ResponseBody
+	public String queryHead(HttpServletRequest request, HttpServletResponse response ) {
+		HttpSession session = request.getSession();
+		int shopId = (int) session.getAttribute("loginId");
+		return service.queryHeadById(shopId);
 	}
 }

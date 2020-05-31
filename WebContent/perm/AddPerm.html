@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<!--设置浏览器的布局视口，只在移动端浏览器起作用-->
+		<meta name="viewport" content="width=width-device,initial-scale=1,user-scalable=no" />
+		<meta charset="UTF-8">
+		<title>增加权限</title>
+		<link rel="stylesheet" href="../js/bootstrap/css/bootstrap.css" />
+	</head>
+
+	<body>
+		<div class="container">
+
+			<h3 class="page-header">
+				增加新权限
+			</h3>
+
+			<form class="form-horizontal col-md-10" id="form1">
+				<div class="form-group">
+					<label for="" class="col-md-2">权限名称</label>
+					<div class="col-md-10">
+						<input type="text" id="permName" name="permName" placeholder="请输入权限名称" class="form-control" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="" class="col-md-2">权限信息</label>
+					<div class="col-md-10">
+						<input type="text" id="permInfo" name="permInfo" placeholder="请输入权限名称" class="form-control" />
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-md-offset-6 col-md-3">
+						<input type="button" value="返回" class="btn btn-warning btn-block" onclick="history.back();" />
+					</div>
+					<div class="col-md-3">
+						<input type="button" value="增加" class="btn btn-primary btn-block" id = "addBtn"/>
+					</div>
+				</div>
+			</form>
+
+		</div>
+		
+		
+
+		<script type="text/javascript" src="../js/jquery.js"></script>
+		<script type="text/javascript" src="../js/global.js"></script>
+		<script type="text/javascript" src="../js/bootstrap/js/bootstrap.js"></script>
+		<script type="text/javascript" src="../js/layer/layer.js" ></script>
+
+		<script>
+			
+			//单击增加按钮
+			$('#addBtn').click(function(){
+				
+				//表单验证函数
+				function checkForm() {
+					
+					//名称验证
+					var permName = $('#permName');
+					
+					if (permName.val() == '' || permName.val().length > 20) {
+						layer.msg('权限名称不能为空且最多20字符');
+						permName.focus();
+						return false;
+					}	
+					
+					//信息验证
+					var permInfo = $('#permInfo');
+					
+					if (permInfo.val() == '' || permInfo.val().length > 50) {
+						layer.msg('权限信息不能为空且最多50字符');
+						permInfo.focus();
+						return false;
+					}	
+					
+					return true;					
+				}				
+				
+				//调用表单验证
+				if ( !checkForm() )
+					return;	
+					
+				//加载层
+				layer.load(2);
+				
+				//把表单元素序列化为参数数据
+				var params = $('#form1').serialize();
+				
+				//发出ajax请求调用后端接口
+				$.ajax({
+					type:"post", //请求类型get post
+					url: baseUrl + "/perm/add", //请求url地址
+					async:true, //true默认表示异步请求
+					dataType:'text', //响应的数据类型
+					data:params   //请求参数数据
+				})
+				.done(function(data,status,xhr){ //请求成功回调函数
+					layer.closeAll();//关闭加载
+					layer.msg('增加权限成功');	
+					
+					setTimeout(function(){
+						location.href = 'QueryPerm.html';//重定向到查询画面
+					},1000);
+				})
+				.fail(function(xhr,errorStatus,errorText){ //请求失败回调函数
+					alert(errorStatus + ',' + errorText);
+					layer.closeAll();//关闭加载
+				});				
+				
+			});			
+		</script>
+		
+	</body>
+
+</html>

@@ -28,14 +28,37 @@ public interface ProductMapper {
 	//批量审核通过
 	void updateMany(int[] ids,int proManaId);
 	
+	//批量购买
+	void buyMany(int[] ids);
 	//查询
 	Product queryById(int proId);
 	
+	//修改
+	void updateState(int proId);
+	
+	//查询
+	Product queryTotalById(int proId);
+	
 	//动态查询
-	List<Product> queryByCondition(@Param("start") int start, @Param("pageSize") int pageSize,@Param("proCusId") int proCusId,
-			@Param("proShopId") int proShopId,@Param("proPtId") int proPtId);
+	List<Product> queryByCondition(@Param("start") int start, @Param("pageSize") int pageSize,@Param("proCusId") Integer proCusId,
+			@Param("proShopId") Integer proShopId,@Param("proPtId") Integer proPtId,@Param("proState")String proState);
+	
+	//动态查询无分页
+	List<Product> queryByConditionNoPager(@Param("proCusId") Integer proCusId,
+			@Param("proShopId") Integer proShopId,@Param("proPtId") Integer proPtId,@Param("proState")String proState);
 	
 	//得到动态查询总数
-	int getCountByCondition(@Param("proCusId") int proCusId,
-			@Param("proShopId") int proShopId,@Param("proPtId") int proPtId);
+	int getCountByCondition(@Param("proCusId") Integer proCusId,
+			@Param("proShopId") Integer proShopId,@Param("proPtId") Integer proPtId,@Param("proState")String proState);
+	
+	//查看商品图片
+	String queryPhoto(int proId);
+	
+	//查询发布总数
+	int getAllCount();
+	
+	//查询所有无条件
+	List<Product> query(@Param("start") int start, @Param("pageSize") int pageSize);
+
+	int getLastInsertId();
 }

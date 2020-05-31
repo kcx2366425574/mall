@@ -37,7 +37,7 @@
   </update>
   
   <select id="queryByCusId" parameterType="java.lang.Integer" resultMap ="BaseResultMap">
-  	select * from cus_ex where ce_cus_id = #{ceCus.cusId,jdbcType=INTEGER}
+  	select * from cus_ex where ce_cus_id = #{ceCusId,jdbcType=INTEGER}
   </select>
   
   <select id="queryAll" resultMap="BaseResultMap" >

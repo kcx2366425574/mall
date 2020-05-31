@@ -18,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.kcx.mall.common.Constant;
 import com.kcx.mall.common.Pager;
 import com.kcx.mall.common.shiroHelper.CustomizedToken;
 import com.kcx.mall.common.shiroHelper.LoginType;
@@ -85,6 +86,7 @@ public class ManagerController {
 		mana.setManaIson(false);
 		String manaPassword = new Sha256Hash(mana.getManaPassword(), "我有一只小花猫", 10).toBase64();
 		mana.setManaPassword(manaPassword);
+		mana.setManaPhoto(Constant.PHOTO_STRING);
 		service.insertManager(mana);
 	}
 	
@@ -171,7 +173,7 @@ public class ManagerController {
 		service.updateHead(manaId, manaPhoto);
 	}
 	
-	//获取头像
+	//更新密码
 	@RequestMapping("/manager/updatePwd")
 	@ResponseBody
 	public boolean updatePwd(HttpServletRequest request, HttpServletResponse response,String newManaPwd,String oldManaPwd) {
@@ -187,7 +189,7 @@ public class ManagerController {
 		return true;
 	}
 	
-	//获取id
+	//获取登录名
 	@RequestMapping("/manager/getName")
 	@ResponseBody
 	public String getName(HttpServletRequest request, HttpServletResponse response) {

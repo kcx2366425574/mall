@@ -46,25 +46,37 @@ public class CommonFilter implements Filter {
 		
 		if (!uri.equals(app + "/") 
 				&& !uri.equals(app + "/login.html")
+				&& !uri.equals(app + "/register.html")
+				&& !uri.equals(app + "/customer/addCustomer.html")
+				&& !uri.equals(app + "/shop/addShop.html")
+				&& !uri.equals(app + "/*/checkLoginName*")
 				&& !uri.equals(app + "/logout.jsp")
-				&& !uri.equals(app + "/manager/login")
-				&& !uri.equals(app + "/customer/login")
-				&& !uri.equals(app + "/shop/login")
+				&& !uri.equals(app + "/customer/login*")
+				&& !uri.equals(app + "/manager/login*")
+				&& !uri.equals(app + "/shop/login*")
 				&& !uri.startsWith(app + "/css")
+				&& !uri.startsWith(app + "/customer/login")
+				&& !uri.startsWith(app + "/shop/login")
+				&& !uri.startsWith(app + "/manager/login")
 				&& !uri.startsWith(app + "/getVerifiCode")
 				&& !uri.startsWith(app + "/auth")
+				&& !uri.startsWith(app + "/customer/checkLoginName")
+				&& !uri.startsWith(app + "/customer/add")
+				&& !uri.startsWith(app + "/shop/add")
 				&& !uri.startsWith(app + "/js")
 				&& !uri.startsWith(app + "/getVerifiCode*")
 				&& !uri.startsWith(app + "/auth")
 				&& !uri.startsWith(app + "/fonts")
 				&& !uri.startsWith(app + "/images")) {
 			
+//			System.out.println("这是url:   "+uri);
+//			System.out.println("这是app:   "+app);
+//			System.out.println("这是判断   "+uri.startsWith(app + "/customer/checkLoginName"));
 			//登录判断
 			HttpSession session = request.getSession();			
 			String loginName = (String) session.getAttribute("loginName");
-			System.out.println(loginName);
 			if (loginName == null) {
-				
+				System.out.println("loginName为空");
 				//判断是否是ajax请求
 				String xhr = request.getHeader("x-requested-with");
 								

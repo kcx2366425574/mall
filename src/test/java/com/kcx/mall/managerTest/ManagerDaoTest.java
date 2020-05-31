@@ -27,8 +27,12 @@ public class ManagerDaoTest {
 	 */
 	@Test
 	public void testadd() {
-		Manager manager = new Manager("ceshi", "123456", false,"啥事也不干");
-		mapper.addMana(manager);
+		String manaPassword = new Sha256Hash("123456", "我有一只小花猫", 10).toBase64();
+		for(int i=0;i<10;i++) {
+			Manager manager = new Manager("ceshi"+i, manaPassword, false,"啥事也不干"+i);
+			mapper.addMana(manager);
+		}
+		
 	}
 	
 	/**

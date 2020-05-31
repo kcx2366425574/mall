@@ -3,9 +3,9 @@
     
 <%
 	session.invalidate(); //销毁当前的session对象
-	response.sendRedirect("login.html");//重定向到登录页
+//	response.sendRedirect("login.html");//重定向到登录页
 %>
-<!--<script>
+<script>
 	//在最外层窗口重定性
-	window.top.location.href = 'loginTest.html'	
-</script>-->
+	window.top.location.href = 'login.html'	
+</script>

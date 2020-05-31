@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="../js/layui/css/layui.css" />
+	</head>
+	<body>
+		<ul class="layui-nav">
+		  <li class="layui-nav-item">
+		    <a href="queryManager.html" target="content">主页</a>
+		  </li>
+		  <li class="layui-nav-item">
+		    <a href="updateManaHead.html">更新头像</a>
+		  </li>
+		  <li class="layui-nav-item">
+		    <a href="updateManaPwd.html">修改密码</a>
+		  </li>
+		  <li class="layui-nav-item">
+		    <a id="name" href=""><img id="head" class="layui-nav-img">{{loginName}}</a>
+		  </li>
+		</ul>
+	</body>
+	<script type="text/javascript" src="../js/jquery.js" ></script>
+	<script type="text/javascript" src="../js/global.js" ></script>
+	<script type="text/javascript" src="../js/bootstrap/js/bootstrap.js" ></script>
+	<script type="text/javascript" src="../js/layer/layer.js"></script>
+	<script type="text/javascript" src="../js/vue/vue2.5.js" ></script>
+	<script src="../js/layui/layui.all.js"></script>
+	
+	<script type="text/javascript">
+		var vName = new Vue({
+				el:'#name',
+				data:{
+					loginName:''
+				},
+				methods:{
+					ini:function() {  //初始化
+																
+												
+						//发出ajax请求调用后端接口
+						var url = baseUrl + "/manager/getName";
+						
+						$.ajax({
+							type:"get", //请求类型get post
+							url: url, //请求url地址
+							async:true, //true默认表示异步请求
+							dataType:'text', //响应的数据类型	
+						})
+						.done(function(data,status,xhr){ //请求成功回调函数
+							vName.loginName = data;
+						})
+						.fail(function(xhr,errorStatus,errorText){ //请求失败回调函数
+							alert(errorStatus + ',' + errorText);				
+						});
+					}
+				}
+			});
+				
+			vName.ini();
+			
+			
+			$.ajax({
+				type: "get", //请求类型get post
+				url: baseUrl+'/manager/getHead', //请求url地址
+				async: true, //true默认表示异步请求
+				dataType: 'text', //响应的数据类型	
+			})
+			.done(function(data, status, xhr) { //请求成功回调函数
+				$('#head').attr('src',data);
+			})
+			.fail(function(xhr, errorStatus, errorText) { //请求失败回调函数
+				alert(errorStatus + ',' + errorText);
+			});
+	</script>
+</html>

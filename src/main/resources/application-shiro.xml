@@ -8,9 +8,6 @@
 	<!-- 生命周期对象 -->
 	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
 	
-	<!-- shiro的realm类
-	<bean id="shiroRealm" class="com.kcx.mall.common.ShiroRealm"/>
-	 -->
 	 
 	<!-- 配置缓存，只会查询一次当前用户的授权，然后放到缓存中，以后都是从缓存中查询当前用户的权限 -->
 	<bean id="cacheManager" class="org.apache.shiro.cache.MemoryConstrainedCacheManager" />
@@ -71,12 +68,7 @@
 		<property name="securityManager" ref="securityManager" />
 		
 		<!-- #####以下为可选配置，请按照实际项目需要进行配置#### -->
-		<!-- 登陆页的url -->
-		<property name="loginUrl" value="/logout.jsp" />
 		
-		<!-- 登陆成功跳转的页（可选） 
-		<property name="successUrl" value="/Main.html" />
-		-->
 		<!-- 权限验证失败跳转的url -->
 		<property name="unauthorizedUrl" value="/failed.jsp" />
 		
@@ -85,14 +77,21 @@
 			<value>	
 				/ = anon
 				/login.html = anon
+				/register.html = anon
+				/customer/addCustomer.html = anon
+				/shop/addShop.html = anon
 				/manager/login* = anon
 				/shop/login* = anon
+				/customer/login* = anon
+				/*/checkLoginName* = anon
 				/customer/login* = anon
 				/css/** = anon
 				/images/** = anon				
 				/js/** = anon
 				/logout.jsp* = anon
 				/getVerifiCode = anon
+				/customer/add = anon
+				/shop/add = anon
 				/auth = anon
 				/fonts/* = anon
 				

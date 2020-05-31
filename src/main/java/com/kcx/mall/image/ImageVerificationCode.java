@@ -100,8 +100,7 @@ public class ImageVerificationCode {
         BufferedImage image = createImage();
         Graphics2D g = (Graphics2D) image.getGraphics(); //获取画笔
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < 4; i++)             //画四个字符即可
-        {
+        for (int i = 0; i < 4; i++) {             //画四个字符即可
             String s = randomChar() + "";      //随机生成字符，因为只有画字符串的方法，没有画字符的方法，所以需要将字符变成字符串再画
             sb.append(s);                      //添加到StringBuilder里面
             float x = i * 1.0F * weight / 4;   //定义字符的x坐标
