@@ -123,7 +123,7 @@ classpath:/org/springframework/aop/config/spring-aop-3.0.xsd">
 		<dependency>
 		    <groupId>org.apache.shiro</groupId>
 		    <artifactId>shiro-core</artifactId>
-		    <version>1.4.0</version>
+		    <version>1.6.0</version>
 		</dependency>
 		
 		
